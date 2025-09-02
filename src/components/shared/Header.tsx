@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Button } from "../ui/button";
-import { Menu, User, LogOut, Settings } from "lucide-react";
+import { User, LogOut, Settings } from "lucide-react";
 import { useAuth } from "../../contexts/AuthProvider";
 import {
   DropdownMenu,
@@ -11,42 +10,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-
-const navLinks = [
-  { title: "Home", path: "/" },
-  { title: "Library", path: "/library" },
-  { title: "Pricing", path: "/pricing" },
-];
+import Navigation from "./Navigation";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-black/90 backdrop-blur-lg ">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <NavLink
-            to="/"
-            className="text-2xl font-bold text-white tracking-wider"
-          >
-            E-Book
+    // The main header container is no longer sticky
+    <header className="sticky top-0 z-50 border-b border-gray-800 ">
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex relative items-center justify-between h-20">
+          {/* Logo - Just the text name */}
+          <NavLink to="/" className="flex items-center space-x-2">
+            <span className="text-2xl font-bold text-white tracking-wider mix-blend-difference hover:mix-blend-normal transition-all duration-300">
+              E-Book
+            </span>
           </NavLink>
-
-          <nav className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.title}
-                to={link.path}
-                className="relative text-gray-300 hover:text-white transition-colors duration-300 group"
-              >
-                {link.title}
-                <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
-              </NavLink>
-            ))}
-          </nav>
-
-          <div className="hidden md:flex items-center space-x-3">
+          <Navigation />
+          {/* Auth buttons on the right (Get Started button removed) */}
+          <div className="flex items-center space-x-3">
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -87,30 +69,16 @@ const Header = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <>
-                <Button
-                  asChild
-                  variant="ghost"
-                  className="text-white hover:bg-gray-800 hover:text-white"
-                >
-                  <NavLink to="/login">Sign In</NavLink>
-                </Button>
-                <Button
-                  asChild
-                  className="bg-white text-black hover:bg-gray-200"
-                >
-                  <NavLink to="/register">Get Started</NavLink>
-                </Button>
-              </>
+              <Button
+                asChild
+                className="bg-black/98 text-white hover:bg-gray-900 border border-gray-700 hover:border-gray-600 px-6 py-2 rounded-lg transition-all duration-300"
+              >
+                <NavLink to="/login">Sign In</NavLink>
+              </Button>
             )}
           </div>
-          <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-white">
-              <Menu size={28} />
-            </button>
-          </div>
         </div>
-      </div>
+      </div>      
     </header>
   );
 };
