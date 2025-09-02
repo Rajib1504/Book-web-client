@@ -33,10 +33,10 @@ const Header = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
-                    variant="ghost"
+                    variant="default"
                     className="relative h-10 w-10 rounded-full"
                   >
-                    <div className="flex items-center justify-center bg-gray-700 h-full w-full rounded-full text-white text-lg font-semibold">
+                    <div className="flex items-center justify-center h-full w-full border-blue-600 rounded-full text-white text-lg font-semibold">
                       {user?.name.charAt(0).toUpperCase()}
                     </div>
                   </Button>
