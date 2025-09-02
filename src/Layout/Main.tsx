@@ -4,9 +4,11 @@ import Footer from "../components/shared/Footer";
 
 const Main = () => {
   return (
-    <div className="bg-black/98 ">
+    <div className="bg-black/98  ">
       <Header />
-      <Outlet />
+      <main className="min-h-screen text-white">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );
