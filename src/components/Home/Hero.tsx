@@ -2,7 +2,8 @@ import { useEffect, useRef } from "react";
 
 import { gsap } from "gsap";
 import { MoveRight } from "lucide-react";
-import { Button } from "../../ui/button";
+import { Button } from "../ui/button";
+
 
 // --- SVG Background Component (Defined inside Hero.tsx) ---
 const HeroBackground = () => {
@@ -85,8 +86,10 @@ const Hero = () => {
   const heroContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const targets = heroContentRef.current?.querySelectorAll(".animate-in");
+    if (!targets || targets.length === 0) return;
     gsap.fromTo(
-      heroContentRef.current?.querySelectorAll(".animate-in"),
+      targets,
       { y: 60, opacity: 0, skewY: 5 },
       {
         y: 0,
