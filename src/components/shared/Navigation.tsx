@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 // Navigation links
 const navLinks = [
   { title: "Home", path: "/" },
-  { title: "Products", path: "/products" },
+  { title: "Pricing", path: "/pricing" },
   { title: "Services", path: "/services" },
   { title: "Resources", path: "/resources" },
   { title: "About", path: "/about" },
