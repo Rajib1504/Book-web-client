@@ -6,6 +6,11 @@ import Register from "../Pages/Auth/Register";
 import Product from "../Pages/Product";
 import PricingPage from "../Pages/Pricing/PricingPage";
 import AboutPage from "../Pages/About/AboutPage";
+import Layout from "../Pages/library/Layout";
+import LibraryHome from './../components/Library/components/LibraryHome';
+import Popular from "../components/Library/components/Popular";
+import ProductRequests from "../components/Library/components/ProductRequests";
+import Saved from "../components/Library/components/Saved";
 
 export const router = createBrowserRouter([
   {
@@ -38,4 +43,23 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/library",
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        element: <LibraryHome />
+      },{
+        path: "/library/popular",
+        element: <Popular />
+      },{
+        path: "/library/product-requests",
+        element: <ProductRequests />
+      },{
+        path: "/library/saved",
+        element: <Saved />
+      }
+    ],
+  }
 ]);
