@@ -7,10 +7,11 @@ import Product from "../Pages/Product";
 import PricingPage from "../Pages/Pricing/PricingPage";
 import AboutPage from "../Pages/About/AboutPage";
 import Layout from "../Pages/library/Layout";
-import LibraryHome from './../components/Library/components/LibraryHome';
+import LibraryHome from "./../components/Library/components/LibraryHome";
 import Popular from "../components/Library/components/Popular";
 import ProductRequests from "../components/Library/components/ProductRequests";
 import Saved from "../components/Library/components/Saved";
+import ProductDetailsPage from "../Pages/library/ProductDetailsPage";
 
 export const router = createBrowserRouter([
   {
@@ -49,17 +50,24 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <LibraryHome />
-      },{
+        element: <LibraryHome />,
+      },
+      {
+        path: "/library/product/:id",
+        element: <ProductDetailsPage />,
+      },
+      {
         path: "/library/popular",
-        element: <Popular />
-      },{
+        element: <Popular />,
+      },
+      {
         path: "/library/product-requests",
-        element: <ProductRequests />
-      },{
+        element: <ProductRequests />,
+      },
+      {
         path: "/library/saved",
-        element: <Saved />
-      }
+        element: <Saved />,
+      },
     ],
-  }
+  },
 ]);
