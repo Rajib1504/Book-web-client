@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "title": "The 6-Day YouTube Accelerator",
+    "subtitle": "",
+    "category": "E-Mail Course",
+    "icon": "mail",
+    "tags": ["Marketing", "Social Media", "Content Creation"],
+    "short_description": "An e-mail course designed to help you master YouTube growth in just six days.",
+    "cover_image": "https://i2-prod.walesonline.co.uk/incoming/article6890072.ece/ALTERNATES/s615b/hp1.jpg",
+    "stats": { "pages": 25, "words": "5,000", "size": "2.5 MB" },
+    "long_description": "This course provides a day-by-day blueprint to optimize your YouTube channel, create engaging content, and grow your subscriber base exponentially.",
+    "whats_inside": ["Daily video lessons", "Actionable worksheets", "Community access"],
+    "usage_rights": ["Use for personal learning", "Share with your team", "Cannot resell"],
+    "file_details": { "type": "ZIP", "size": "2.5 MB", "date_added": "October 1, 2025" }
+  },
+  {
+    "id": "2",
+    "title": "Interview Success Blueprint",
+    "subtitle": "",
+    "category": "Guide Book",
+    "icon": "book",
+    "tags": ["Career", "Self-Help", "Professional"],
+    "short_description": "Stand out and get hired with confidence using this comprehensive interview guide.",
+    "cover_image": "https://i2-prod.walesonline.co.uk/incoming/article6890072.ece/ALTERNATES/s615b/hp1.jpg",
+    "stats": { "pages": 110, "words": "20,000", "size": "5.1 MB" },
+    "long_description": "A complete guide covering everything from resume building to salary negotiation, designed to help you land your dream job.",
+    "whats_inside": ["Common interview questions & answers", "Resume templates", "Negotiation scripts"],
+    "usage_rights": ["Personal use only"],
+    "file_details": { "type": "PDF", "size": "5.1 MB", "date_added": "September 28, 2025" }
+  },
+  {
+    "id": "3",
+    "title": "Break Free From Stress",
+    "subtitle": "",
+    "category": "Podcast Series",
+    "icon": "mic",
+    "tags": ["Wellness", "Mental Health", "Lifestyle"],
+    "short_description": "A podcast series designed to help your customers understand and manage stress effectively.",
+    "cover_image": "https://i2-prod.walesonline.co.uk/incoming/article6890072.ece/ALTERNATES/s615b/hp1.jpg",
+    "stats": { "pages": 0, "words": "N/A", "size": "150 MB" },
+    "long_description": "This series explores the science of stress and provides actionable techniques to achieve a balanced and peaceful life.",
+    "whats_inside": ["5 guided meditation episodes", "Expert interviews", "Stress-reduction exercises"],
+    "usage_rights": ["Can be shared as a bonus", "Cannot be sold separately"],
+    "file_details": { "type": "MP3", "size": "150 MB", "date_added": "September 25, 2025" }
+  },
+  {
+    "id": "4",
+    "title": "13 Cortisol Proof Rituals",
+    "subtitle": "that Work with Your Body's Rhythms",
+    "category": "Listicle",
+    "icon": "list",
+    "tags": ["Energy", "Wellness", "Health and Fitness", "Lifestyle"],
+    "short_description": "Listicle designed to help your customers rebalance cortisol with simple daily rituals that support energy, sleep, and long-term health.",
+    "cover_image": "https://i2-prod.walesonline.co.uk/incoming/article6890072.ece/ALTERNATES/s615b/hp1.jpg",
+    "stats": { "pages": 15, "words": "1,728", "size": "1.0 MB" },
+    "long_description": "This listicle is a ready-to-use content asset designed to educate, engage, and inspire your audience with skimmable, high-value insights.",
+    "whats_inside": ["13 proven rituals", "Science-backed practices", "Simple lifestyle tips"],
+    "usage_rights": ["Brand it as your own", "Give it away or sell it", "Repurpose into other formats"],
+    "file_details": { "type": "ZIP", "size": "1 MB", "date_added": "September 3, 2025" }
+  }
+]

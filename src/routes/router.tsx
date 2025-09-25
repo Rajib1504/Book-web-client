@@ -12,6 +12,7 @@ import Popular from "../components/Library/components/Popular";
 import ProductRequests from "../components/Library/components/ProductRequests";
 import Saved from "../components/Library/components/Saved";
 import ProductDetailsPage from "../Pages/library/ProductDetailsPage";
+import SpecialDeals from "../components/Library/components/SpecialDeals";
 
 export const router = createBrowserRouter([
   {
@@ -67,6 +68,10 @@ export const router = createBrowserRouter([
       {
         path: "/library/saved",
         element: <Saved />,
+      },
+      {
+        path: "/library/special-deals",
+        element: <SpecialDeals />,
       },
     ],
   },
