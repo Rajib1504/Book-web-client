@@ -1,8 +1,23 @@
 import React from "react";
 import {
-  Home, Flame, Lightbulb, Bookmark, Gift, GraduationCap, RectangleHorizontal, Image,
-  FileText, Pencil, Calculator, ChevronsUpDown, Download, Star, Briefcase,
-  Users, Key, LogOut,
+  Home,
+  Flame,
+  Lightbulb,
+  Bookmark,
+  Gift,
+  GraduationCap,
+  RectangleHorizontal,
+  Image,
+  FileText,
+  Pencil,
+  Calculator,
+  ChevronsUpDown,
+  Download,
+  Star,
+  Briefcase,
+  Users,
+  Key,
+  LogOut,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthProvider"; // AuthProvider ইম্পোর্ট করতে হবে
@@ -22,37 +37,91 @@ const Sidebar = () => {
   const masterLibraryItems = [
     { icon: Home, label: "Home", link: "/library" },
     { icon: Flame, label: "Popular", link: "/library/popular" },
-    { icon: Lightbulb, label: "Product Requests", link: "/library/product-requests" },
+    {
+      icon: Lightbulb,
+      label: "Product Requests",
+      link: "/library/product-requests",
+    },
     { icon: Bookmark, label: "Saved", link: "/library/saved" },
   ];
 
   const resourcesItems = [
-    { icon: Gift, label: "Special Deals", badge: "NEW", link: "/library/special-deals" },
-    { icon: GraduationCap, label: "Digital Product University", link: "/library/digital-product-university" },
-    { icon: RectangleHorizontal, label: "Product Mockups", link: "/library/product-mockups" },
-    { icon: Image, label: "Book Covers", badge: "NEW", link: "/library/book-covers" },
+    {
+      icon: Gift,
+      label: "Special Deals",
+      badge: "NEW",
+      link: "/library/special-deals",
+    },
+    {
+      icon: GraduationCap,
+      label: "Digital Product University",
+      link: "/library/digital-product-university",
+    },
+    {
+      icon: RectangleHorizontal,
+      label: "Product Mockups",
+      link: "/library/product-mockups",
+    },
+    {
+      icon: Image,
+      label: "Book Covers",
+      badge: "NEW",
+      link: "/library/book-cover-templates",
+    },
   ];
 
   const toolsItems = [
     { icon: FileText, label: "PDF Rebrander", link: "/library/pdf-rebrander" },
-    { icon: Pencil, label: "Product Descriptions", link: "/library/product-descriptions" },
+    {
+      icon: Pencil,
+      label: "Product Descriptions",
+      link: "/library/product-descriptions",
+    },
     { icon: Lightbulb, label: "Product Ideas", link: "/library/product-ideas" },
-    { icon: FileText, label: "Book Title Generator", link: "/library/book-title-generator" },
-    { icon: Calculator, label: "Revenue Calculator", link: "/library/revenue-calculator" },
+    {
+      icon: FileText,
+      label: "Book Title Generator",
+      link: "/library/book-title-generator",
+    },
+    {
+      icon: Calculator,
+      label: "Revenue Calculator",
+      link: "/library/revenue-calculator",
+    },
   ];
 
-  const SidebarItem = ({ icon: Icon, label, badge, link }: { icon: React.ElementType; label: string; badge?: string; link: string; }) => {
+  const SidebarItem = ({
+    icon: Icon,
+    label,
+    badge,
+    link,
+  }: {
+    icon: React.ElementType;
+    label: string;
+    badge?: string;
+    link: string;
+  }) => {
     const isActive = location.pathname === link;
     return (
       <Link
         to={link}
         className={`flex items-center justify-between px-4 py-2 cursor-pointer group transition-colors rounded-lg mx-2 ${
-          isActive ? "bg-red-500/80 text-white" : "text-gray-300 hover:bg-gray-800"
+          isActive
+            ? "bg-red-500/80 text-white"
+            : "text-gray-300 hover:bg-gray-800"
         }`}
       >
         <div className="flex items-center gap-3">
-          <Icon className={`w-5 h-5 transition-colors ${isActive ? "text-white" : "text-gray-400 group-hover:text-white"}`} />
-          <span className={`text-sm font-medium transition-colors ${isActive ? "text-white" : "text-gray-300"}`}>
+          <Icon
+            className={`w-5 h-5 transition-colors ${
+              isActive ? "text-white" : "text-gray-400 group-hover:text-white"
+            }`}
+          />
+          <span
+            className={`text-sm font-medium transition-colors ${
+              isActive ? "text-white" : "text-gray-300"
+            }`}
+          >
             {label}
           </span>
         </div>
@@ -89,24 +158,29 @@ const Sidebar = () => {
           <div className="mb-4">
             <SectionHeader title="Master Library" />
             <div className="mt-2 space-y-1">
-              {masterLibraryItems.map((item) => <SidebarItem key={item.label} {...item} />)}
+              {masterLibraryItems.map((item) => (
+                <SidebarItem key={item.label} {...item} />
+              ))}
             </div>
           </div>
           <div className="mb-4">
             <SectionHeader title="Resources" />
             <div className="mt-2 space-y-1">
-              {resourcesItems.map((item) => <SidebarItem key={item.label} {...item} />)}
+              {resourcesItems.map((item) => (
+                <SidebarItem key={item.label} {...item} />
+              ))}
             </div>
           </div>
           <div>
             <SectionHeader title="Tools" />
             <div className="mt-2 space-y-1">
-              {toolsItems.map((item) => <SidebarItem key={item.label} {...item} />)}
+              {toolsItems.map((item) => (
+                <SidebarItem key={item.label} {...item} />
+              ))}
             </div>
           </div>
         </div>
       </div>
-
 
       <div className="p-2 border-t border-gray-800 flex-shrink-0">
         <DropdownMenu>
@@ -128,12 +202,20 @@ const Sidebar = () => {
               </section>
             </div>
           </DropdownMenuTrigger>
-          
-          <DropdownMenuContent className="w-[240px] mb-2" side="top" align="start">
+
+          <DropdownMenuContent
+            className="w-[240px] mb-2"
+            side="top"
+            align="start"
+          >
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none text-white">{user?.name || "Akshay Patel"}</p>
-                <p className="text-xs leading-none text-gray-400">{user?.email || "akshaypatel@gmail.com"}</p>
+                <p className="text-sm font-medium leading-none text-white">
+                  {user?.name || "Akshay Patel"}
+                </p>
+                <p className="text-xs leading-none text-gray-400">
+                  {user?.email || "akshaypatel@gmail.com"}
+                </p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -161,7 +243,10 @@ const Sidebar = () => {
               <Key className="mr-2 h-4 w-4" />
               <span>Your License</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={logout} className="text-red-400 focus:text-red-400">
+            <DropdownMenuItem
+              onClick={logout}
+              className="text-red-400 focus:text-red-400"
+            >
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>

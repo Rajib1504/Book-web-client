@@ -13,6 +13,7 @@ import ProductRequests from "../components/Library/components/ProductRequests";
 import Saved from "../components/Library/components/Saved";
 import ProductDetailsPage from "../Pages/library/ProductDetailsPage";
 import SpecialDeals from "../components/Library/components/SpecialDeals";
+import BookCoverTemplates from "../components/Library/components/BookCoverTemplates";
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
       {
         path: "/library/product-requests",
         element: <ProductRequests />,
+      },
+      {
+        path: "/library/book-cover-templates",
+        element: <BookCoverTemplates />,
       },
       {
         path: "/library/saved",

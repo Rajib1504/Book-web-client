@@ -25,6 +25,7 @@
     "gsap": "^3.13.0",
     "lucide-react": "^0.540.0",
     "next-themes": "^0.4.6",
+    "radix-ui": "^1.4.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.8.1",
