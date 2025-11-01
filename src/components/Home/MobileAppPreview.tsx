@@ -12,7 +12,6 @@ import {
   Play,
   CheckCircle,
   Star,
-  ArrowRight,
   Wifi,
   Battery,
   Signal
@@ -55,7 +54,7 @@ const devices = [
   {
     type: "Tablet",
     icon: Tablet,
-    size: "w-80 h-96",
+    size: "w-76 h-96",
     mockupClass: "tablet-mockup",
     features: ["Large Display", "Multi-touch", "Landscape Mode"],
     color: "from-purple-600 to-pink-600"
@@ -63,7 +62,7 @@ const devices = [
   {
     type: "Desktop",
     icon: Laptop,
-    size: "w-96 h-64",
+    size: "w-80 h-64",
     mockupClass: "desktop-mockup",
     features: ["Full Features", "Keyboard Shortcuts", "Multi-window"],
     color: "from-red-600 to-orange-600"
@@ -347,7 +346,7 @@ const MobileAppPreview = () => {
 
         {/* CTA Section */}
         <div className="text-center">
-          <div className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-full">
+          <div className="inline-flex items-center justify-center w-full sm:w-fit px-8 py-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-full">
             <div className="flex items-center space-x-6 text-sm text-gray-300">
               <div className="flex items-center">
                 <Download className="w-4 h-4 text-blue-400 mr-2" />

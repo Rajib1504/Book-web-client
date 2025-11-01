@@ -73,7 +73,7 @@ const StoryTimeline = () => {
           ease: "power3.out",
           scrollTrigger: {
             trigger: cardElement,
-            start: "top 85%",
+            start: "top 50%",
             toggleActions: "play none none reverse",
           },
         }
@@ -104,7 +104,7 @@ const StoryTimeline = () => {
                   index % 2 === 0 ? "justify-start" : "justify-end"
                 }`}
               >
-                <div className="w-1/2 px-8">
+                <div className="w-full md:w-1/2 md:px-8">
                   <div
                     className={`timeline-card p-8 bg-[#1a1a1a] border border-gray-800 rounded-2xl shadow-xl relative backdrop-blur-sm`}
                   >

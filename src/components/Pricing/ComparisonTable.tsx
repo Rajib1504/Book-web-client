@@ -5,7 +5,6 @@ import { Check, X, Star, Crown, TrendingUp, Shield, Zap, Package, DollarSign, Us
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Data for the comparison table
 const comparisonData = [
   {
     feature: "Product Variety (>1000+)",
@@ -63,7 +62,6 @@ const ComparisonTable = () => {
   useEffect(() => {
     const section = sectionRef.current;
     if (section) {
-      // Animate header
       gsap.fromTo(
         section.querySelector(".section-header"),
         { opacity: 0, y: 50 },
@@ -79,7 +77,6 @@ const ComparisonTable = () => {
         }
       );
 
-      // Animate table rows
       gsap.fromTo(
         section.querySelectorAll(".comparison-row"),
         { opacity: 0, y: 30 },
@@ -131,12 +128,10 @@ const ComparisonTable = () => {
   };
 
   return (
-      
     <section
       ref={sectionRef}
       className="py-24 bg-gradient-to-b from-black via-[#0A0A0A] to-black text-white relative overflow-hidden"
     >
-      {/* Background Elements */}
       <div
         className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http://www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.02%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"
       ></div>
@@ -157,19 +152,17 @@ const ComparisonTable = () => {
         </div>
 
         <div className="comparison-table max-w-6xl mx-auto overflow-hidden rounded-3xl border border-gray-800/50 bg-gradient-to-b from-[#111111] to-[#0A0A0A] shadow-2xl shadow-black/50 relative">
-          {/* Glow Effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 via-transparent to-red-500/5 rounded-3xl"></div>
           
-          {/* Table Header */}
-          <div className="grid grid-cols-3 text-center font-bold bg-gradient-to-r from-gray-900/80 via-gray-800/60 to-gray-900/80 backdrop-blur-sm relative z-10">
-            <div className="p-6 border-b border-r border-gray-800/50 text-gray-300 text-lg">
+          <div className="hidden md:grid grid-cols-3 text-center font-bold bg-gradient-to-r from-gray-900/80 via-gray-800/60 to-gray-900/80 backdrop-blur-sm relative z-10">
+            <div className="p-6 border-b border-r border-gray-800/50 text-gray-300 text-base sm:text-lg">
               Features
             </div>
             <div className="p-6 border-b border-r border-gray-800/50 flex items-center justify-center gap-3 text-white bg-gradient-to-r from-red-500/20 to-red-600/20 relative">
               <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-red-600/10 rounded-t-3xl"></div>
               <div className="relative z-10 flex items-center gap-2">
-                <Crown className="h-6 w-6 text-red-400" />
-                <span className="text-xl">E-Book Hub</span>
+                <Crown className="h-6 w-6 text-red-400 hidden sm:block" />
+                <span className="text-base sm:text-lg">E-Book Hub</span>
               </div>
             </div>
             <div className="p-6 border-b border-gray-800/50 text-gray-400 text-lg">
@@ -177,32 +170,41 @@ const ComparisonTable = () => {
             </div>
           </div>
 
-          {/* Table Body */}
-          <div className="relative z-10">
+          <div className="relative z-10 text-sm sm:text-base">
             {comparisonData.map((row, index) => (
               <div
                 key={index}
-                className={`comparison-row grid grid-cols-3 text-center items-center transition-all duration-300 hover:bg-gray-800/20 ${
-                  index % 2 === 0 ? 'bg-gray-900/30' : 'bg-gray-900/10'
-                }`}
+                className={`
+                  comparison-row 
+                  block md:grid md:grid-cols-3 md:items-center 
+                  transition-all duration-300 
+                  border-b border-gray-800/50 last:border-b-0 md:border-b-0
+                  ${index % 2 === 0 ? 'bg-gray-900/30' : 'bg-gray-900/10'}
+                  md:hover:bg-gray-800/20
+                `}
               >
-                <div className="p-6 border-b border-r border-gray-800/50 text-left text-gray-200 flex items-center gap-3">
+                <div className="p-4 md:p-6 md:border-b md:border-r border-gray-800/50 text-left text-gray-200 flex items-center gap-3">
                   <div className="w-10 h-10 bg-gray-800/50 rounded-lg flex items-center justify-center flex-shrink-0">
                     <row.icon className="h-5 w-5 text-red-400" />
                   </div>
                   <span className="font-medium">{row.feature}</span>
                 </div>
-                <div className="p-6 border-b border-r border-gray-800/50 bg-gradient-to-r from-red-500/5 to-red-600/5">
-                  {renderCell(row.us, true)}
-                </div>
-                <div className="p-6 border-b border-gray-800/50">
-                  {renderCell(row.others)}
+
+                <div className="grid grid-cols-2 md:contents">
+                  <div className="p-4 md:p-6 border-t md:border-t-0 border-r border-gray-800/50 md:border-b md:border-r-0 bg-gradient-to-r from-red-500/5 to-red-600/5">
+                    <div className="text-sm text-red-400 mb-3 md:hidden font-semibold">E-Book Hub</div>
+                    {renderCell(row.us, true)}
+                  </div>
+
+                  <div className="py-4 px-2 md:p-6 border-t md:border-t-0 border-gray-800/50 md:border-b">
+                    <div className="text-sm text-gray-400 mb-3 md:hidden font-semibold">Other Sites</div>
+                    {renderCell(row.others)}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Bottom CTA */}
           <div className="p-8 text-center bg-gradient-to-r from-gray-900/50 via-gray-800/30 to-gray-900/50 border-t border-gray-800/50">
             <div className="flex items-center justify-center gap-3 mb-4">
               <Zap className="h-6 w-6 text-red-400" />

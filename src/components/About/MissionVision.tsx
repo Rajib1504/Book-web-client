@@ -1,7 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Target, Eye, Gem, Sparkles, Zap, Users, Globe, ArrowRight, Star } from "lucide-react";
+import {
+  Target,
+  Eye,
+  Gem,
+  Sparkles,
+  Zap,
+  Users,
+  Globe,
+  ArrowRight,
+  Star,
+} from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,14 +39,24 @@ const missionData = {
   },
   values: [
     { icon: Users, title: "Community First", description: "Building together" },
-    { icon: Zap, title: "Innovation", description: "Always pushing boundaries" },
+    {
+      icon: Zap,
+      title: "Innovation",
+      description: "Always pushing boundaries",
+    },
     { icon: Globe, title: "Global Reach", description: "Worldwide impact" },
   ],
 };
 
 // Interactive Mission/Vision Card Component
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const MissionCard = ({ data, isLeft }: { data: typeof missionData.mission; isLeft: boolean }) => {
+const MissionCard = ({
+  data,
+  isLeft,
+}: {
+  data: typeof missionData.mission;
+  isLeft: boolean;
+}) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const iconRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -51,28 +71,28 @@ const MissionCard = ({ data, isLeft }: { data: typeof missionData.mission; isLef
         scale: 1.05,
         y: -10,
         duration: 0.6,
-        ease: "power3.out"
+        ease: "power3.out",
       });
-      
+
       gsap.to(icon, {
         rotation: 360,
         scale: 1.2,
         duration: 0.8,
-        ease: "back.out(1.7)"
+        ease: "back.out(1.7)",
       });
     } else {
       gsap.to(card, {
         scale: 1,
         y: 0,
         duration: 0.4,
-        ease: "power2.out"
+        ease: "power2.out",
       });
-      
+
       gsap.to(icon, {
         rotation: 0,
         scale: 1,
         duration: 0.4,
-        ease: "power2.out"
+        ease: "power2.out",
       });
     }
   }, [isHovered]);
@@ -85,12 +105,15 @@ const MissionCard = ({ data, isLeft }: { data: typeof missionData.mission; isLef
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Card Background */}
-      <div className={`relative p-10 rounded-3xl bg-gradient-to-br from-gray-900/80 to-gray-800/60 border-2 border-gray-700/50 backdrop-blur-xl shadow-2xl overflow-hidden transition-all duration-500 group-hover:border-opacity-100`}
-           style={{ borderColor: isHovered ? data.color : undefined }}>
-        
+      <div
+        className={`relative p-10 rounded-3xl bg-gradient-to-br from-gray-900/80 to-gray-800/60 border-2 border-gray-700/50 backdrop-blur-xl shadow-2xl overflow-hidden transition-all duration-500 group-hover:border-opacity-100`}
+        style={{ borderColor: isHovered ? data.color : undefined }}
+      >
         {/* Animated Background Gradient */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${data.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}></div>
-        
+        <div
+          className={`absolute inset-0 bg-gradient-to-br ${data.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+        ></div>
+
         {/* Floating Particles */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
           {[...Array(6)].map((_, i) => (
@@ -98,10 +121,10 @@ const MissionCard = ({ data, isLeft }: { data: typeof missionData.mission; isLef
               key={i}
               className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
               style={{
-                left: `${20 + (i * 15)}%`,
-                top: `${30 + (i * 10)}%`,
+                left: `${20 + i * 15}%`,
+                top: `${30 + i * 10}%`,
                 animationDelay: `${i * 0.2}s`,
-                animationDuration: '2s'
+                animationDuration: "2s",
               }}
             />
           ))}
@@ -110,7 +133,7 @@ const MissionCard = ({ data, isLeft }: { data: typeof missionData.mission; isLef
         {/* Content */}
         <div className="relative z-10 text-center">
           {/* Icon */}
-          <div 
+          <div
             ref={iconRef}
             className={`inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-r ${data.gradient} shadow-lg mb-8`}
           >
@@ -130,12 +153,14 @@ const MissionCard = ({ data, isLeft }: { data: typeof missionData.mission; isLef
           {/* Stats */}
           <div className="inline-flex items-center space-x-2 px-6 py-3 bg-gray-800/50 border border-gray-600/50 rounded-full backdrop-blur-sm">
             <Star className="h-4 w-4" style={{ color: data.color }} />
-            <span className="text-sm font-semibold text-gray-300">{data.stats}</span>
+            <span className="text-sm font-semibold text-gray-300">
+              {data.stats}
+            </span>
           </div>
         </div>
 
         {/* Glow Effect */}
-        <div 
+        <div
           className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur-xl"
           style={{ backgroundColor: data.color }}
         ></div>
@@ -152,9 +177,10 @@ const ValuesGrid = () => {
     const grid = gridRef.current;
     if (!grid) return;
 
-    const items = grid.querySelectorAll('.value-item');
-    
-    gsap.fromTo(items,
+    const items = grid.querySelectorAll(".value-item");
+
+    gsap.fromTo(
+      items,
       { opacity: 0, y: 30, scale: 0.9 },
       {
         opacity: 1,
@@ -191,7 +217,9 @@ const ValuesGrid = () => {
 const MissionVision = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [activeCard, setActiveCard] = useState<'mission' | 'vision' | null>(null);
+  const [activeCard, setActiveCard] = useState<"mission" | "vision" | null>(
+    null
+  );
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -205,23 +233,24 @@ const MissionVision = () => {
     const masterTimeline = gsap.timeline({ delay: 0.5 });
 
     // Header animation
-    masterTimeline
-      .fromTo(header,
-        { opacity: 0, y: 50, scale: 0.9 },
-        { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "power3.out" }
-      );
+    masterTimeline.fromTo(
+      header,
+      { opacity: 0, y: 50, scale: 0.9 },
+      { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "power3.out" }
+    );
 
     // Cards animation with sophisticated entrance
     cards.forEach((card, index) => {
       const cardElement = card as HTMLElement;
-      
-      gsap.fromTo(cardElement,
-        { 
-          opacity: 0, 
-          y: 80, 
+
+      gsap.fromTo(
+        cardElement,
+        {
+          opacity: 0,
+          y: 80,
           scale: 0.8,
           rotationX: 45,
-          transformOrigin: "center bottom"
+          transformOrigin: "center bottom",
         },
         {
           opacity: 1,
@@ -230,7 +259,7 @@ const MissionVision = () => {
           rotationX: 0,
           duration: 1.2,
           ease: "power3.out",
-          delay: 0.8 + (index * 0.3),
+          delay: 0.8 + index * 0.3,
           scrollTrigger: {
             trigger: cardElement,
             start: "top 85%",
@@ -242,7 +271,8 @@ const MissionVision = () => {
 
     // Values section animation
     if (values) {
-      gsap.fromTo(values,
+      gsap.fromTo(
+        values,
         { opacity: 0, y: 50 },
         {
           opacity: 1,
@@ -256,18 +286,26 @@ const MissionVision = () => {
         }
       );
     }
-
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-32 bg-[#0A0A0A] text-white relative overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="py-32 bg-[#0A0A0A] text-white relative overflow-hidden"
+    >
       {/* Advanced Background Elements */}
       <div className="absolute inset-0">
         {/* Multiple gradient orbs */}
         <div className="absolute top-20 left-10 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[60rem] h-[60rem] bg-red-500/3 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
-        
+        <div
+          className="absolute bottom-20 right-10 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: "2s" }}
+        ></div>
+        <div
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[60rem] h-[60rem] bg-red-500/3 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: "4s" }}
+        ></div>
+
         {/* Floating geometric shapes */}
         <div className="absolute top-32 right-32 w-8 h-8 border border-red-500/20 rotate-45 animate-spin-slow"></div>
         <div className="absolute bottom-32 left-32 w-6 h-6 bg-blue-500/10 rounded-full animate-bounce-slow"></div>
@@ -276,7 +314,7 @@ const MissionVision = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Enhanced Section Header */}
-        <div className="section-header text-center mb-24 max-w-5xl mx-auto">
+        <div className="section-header text-center mb-12 sm:mb-24 max-w-5xl mx-auto">
           <div className="inline-flex items-center justify-center mb-8 px-8 py-4 bg-red-600/10 border border-red-500/30 rounded-full backdrop-blur-sm">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-red-600 rounded-full">
@@ -287,14 +325,14 @@ const MissionVision = () => {
               </span>
             </div>
           </div>
-          
+
           <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8">
             <span className="block text-white">The New Era of</span>
             <span className="block mt-2 bg-gradient-to-r from-red-400 via-red-500 to-red-600 bg-clip-text text-transparent">
               Digital Creation
             </span>
           </h2>
-          
+
           <p className="text-xl text-gray-400 leading-relaxed max-w-3xl mx-auto">
             {missionData.subtitle}
           </p>
@@ -313,9 +351,12 @@ const MissionVision = () => {
         {/* Values Section */}
         <div className="values-section text-center">
           <div className="mb-12">
-            <h3 className="text-3xl font-bold text-white mb-4">Our Core Values</h3>
+            <h3 className="text-3xl font-bold text-white mb-4">
+              Our Core Values
+            </h3>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              The principles that guide everything we do and every decision we make.
+              The principles that guide everything we do and every decision we
+              make.
             </p>
           </div>
           <ValuesGrid />
@@ -325,7 +366,9 @@ const MissionVision = () => {
         <div className="text-center mt-24">
           <div className="inline-flex items-center space-x-4 px-8 py-4 bg-gradient-to-r from-gray-900/50 to-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-full">
             <Sparkles className="h-5 w-5 text-red-500" />
-            <span className="text-gray-300 font-medium">Ready to join our mission?</span>
+            <span className="text-gray-300 font-medium">
+              Ready to join our mission?
+            </span>
             <ArrowRight className="h-5 w-5 text-red-500" />
           </div>
         </div>

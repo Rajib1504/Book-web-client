@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ChevronDown, HelpCircle, Sparkles, MessageCircle } from "lucide-react";
+import { HelpCircle, Sparkles, MessageCircle } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -206,7 +206,7 @@ const FAQ = () => {
                               {faq.question}
                             </h4>
                           </div>
-                          <ChevronDown className="h-5 w-5 text-gray-400 group-hover:text-red-400 transition-all duration-200 group-data-[state=open]:rotate-180 flex-shrink-0" />
+                          {/* <ChevronDown className="h-5 w-5 text-gray-400 group-hover:text-red-400 transition-all duration-200 group-data-[state=open]:rotate-180 flex-shrink-0" /> */}
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="pb-6">

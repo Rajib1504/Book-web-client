@@ -99,7 +99,7 @@ const Gallery = () => {
           {galleryItems.map((item, index) => (
             <div
               key={index}
-              className={`gallery-item ${item.span} overflow-hidden rounded-xl group`}
+              className={`gallery-item cols-span-1 sm:${item.span} overflow-hidden rounded-xl group`}
             >
               <img
                 src={item.src}
