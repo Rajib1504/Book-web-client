@@ -19,16 +19,16 @@ const Navigation = () => {
   useEffect(() => {
     if (navRef.current) {
       gsap.fromTo(
-        navRef.current.querySelectorAll('.nav-link'),
+        navRef.current.querySelectorAll(".nav-link"),
         { opacity: 0, y: -20, scale: 0.9 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          scale: 1, 
-      //     duration: 0.6, 
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          //     duration: 0.6,
           ease: "power3.out",
           stagger: 0.1,
-          delay: 0.2
+          delay: 0.2,
         }
       );
     }
@@ -36,7 +36,7 @@ const Navigation = () => {
 
   return (
     <div className="sticky top-0 z-40 flex justify-center py-4">
-      <nav 
+      <nav
         ref={navRef}
         className="flex items-center space-x-1 bg-neutral-900/90 backdrop-blur-xl border border-neutral-700/50 rounded-full p-2 shadow-2xl shadow-black/20"
       >
@@ -53,17 +53,17 @@ const Navigation = () => {
               }`}
             >
               <span className="relative z-10">{link.title}</span>
-              
+
               {/* Active Indicator - Red Underline */}
               {isActive && (
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-red-500 rounded-full animate-pulse"></div>
               )}
-              
+
               {/* Hover Effect */}
               {!isActive && (
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               )}
-              
+
               {/* Active Background Glow */}
               {isActive && (
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500/20 to-red-600/20 animate-pulse"></div>
