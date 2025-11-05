@@ -40,7 +40,7 @@ export default function BookCoverTemplates() {
           subtitle="Professional book cover designs ready to customize in Canva"
         />
         <Dialog>
-          <section className="grid gird-cols-2 sm:grid-cols-6 gap-3  ">
+          <section className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3  ">
             {loading && "Loading..."}
             {data?.map((item) => (
               <DialogTrigger asChild>
@@ -54,7 +54,7 @@ export default function BookCoverTemplates() {
                     className="rounded-lg group-hover:scale-105 group-hover:brightness-75 transation-all duration-300 hover:overlay hover:bg-background"
                   />
                   <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
-                    <p className="text-primary-foreground text-lg font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 px-4 py-4 rounded ">
+                    <p className="text-primary-foreground text-lg font-semibold opacity-0 group-hover:opacity-100 lg:text-nowrap text-center transition-opacity duration-300 px-4 py-4 rounded ">
                       Upgrade to use
                     </p>
                   </div>

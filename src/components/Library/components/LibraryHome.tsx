@@ -69,7 +69,7 @@ const LibraryHome = () => {
   const currentData = carouselData[currentSlide];
 
   return (
-    <div className="p-8 overflow-y-auto h-screen">
+    <div className="p-8 overflow-y-auto h-screen ">
       {/* Header Section */}
       {/* <div className="mb-8">
         <h1 className="text-4xl font-bold text-black mb-2">Resource Library</h1>
@@ -84,24 +84,24 @@ const LibraryHome = () => {
 
       {/* Carousel Section */}
       <div className="relative">
-        <div className="bg-black rounded-2xl p-8 min-h-[30vw] flex items-center">
-          <div className="flex-1 flex items-center justify-between">
+        <div className="bg-black rounded-2xl p-4 lg:p-8 min-h-[30vw] flex items-center">
+          <div className="lg:flex-1 flex items-center justify-between ">
             {/* Left Side - Content */}
-            <div className="flex-1 pr-8">
-              <h2 className="text-3xl font-bold text-white mb-4">
+            <div className="lg:flex-1 lg:pr-8">
+              <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4">
                 {currentData.title}
               </h2>
-              <p className="text-white text-lg mb-6 leading-relaxed">
+              <p className="text-white text-base lg:text-lg mb-6 leading-relaxed">
                 {currentData.subtitle}
               </p>
 
               {/* Action Buttons */}
-              <div className="flex gap-4">
-                <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition-colors">
+              <div className="flex gap-2 lg:gap-4">
+                <button className="bg-red-600 hover:bg-red-700 text-white px-6 lg:py-3 rounded-lg flex items-center gap-2 transition-colors lg:text-base text-sm">
                   <Download className="w-5 h-5" />
                   {currentData.downloadText}
                 </button>
-                <button className="border-2 hover:bg-gray-800 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition-colors">
+                <button className="border-2 hover:bg-gray-800 text-white px-3 py-4 lg:px-6 lg:py-3 rounded-lg flex items-center gap-2 transition-colors lg:text-base text-sm">
                   {currentData.learnMoreText}
                   <ArrowRight className="w-5 h-5" />
                 </button>
@@ -114,7 +114,7 @@ const LibraryHome = () => {
                 <img
                   src={currentData.bookImage}
                   alt={currentData.title}
-                  className="w-full h-[450px] rounded-lg shadow-lg shadow-gray-500 object-cover"
+                  className="w-full hidden lg:block lg:h-[450px] rounded-lg shadow-lg shadow-gray-500 object-cover"
                   onError={(e) => {
                     // Fallback to a placeholder if image fails to load
                     e.currentTarget.src =

@@ -30,7 +30,10 @@ import {
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 
-const Sidebar = () => {
+interface SidebarProps {
+  onLinkClick?: () => void; // <-- এটি একটি ঐচ্ছিক (optional) ফাংশন
+}
+const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
   const location = useLocation();
   const { user, logout } = useAuth(); // AuthProvider থেকে user এবং logout ফাংশন নাও
 
@@ -95,16 +98,19 @@ const Sidebar = () => {
     label,
     badge,
     link,
+    onLinkClick,
   }: {
     icon: React.ElementType;
     label: string;
     badge?: string;
     link: string;
+    onLinkClick?: () => void; // <-- টাইপ ডিফাইন করা
   }) => {
     const isActive = location.pathname === link;
     return (
       <Link
         to={link}
+        onClick={onLinkClick} // <-- ৫. এখানে onClick ইভেন্ট যোগ করা
         className={`flex items-center justify-between px-4 py-2 cursor-pointer group transition-colors rounded-lg mx-2 ${
           isActive
             ? "bg-red-500/80 text-white"
@@ -159,7 +165,11 @@ const Sidebar = () => {
             <SectionHeader title="Master Library" />
             <div className="mt-2 space-y-1">
               {masterLibraryItems.map((item) => (
-                <SidebarItem key={item.label} {...item} />
+                <SidebarItem
+                  key={item.label}
+                  {...item}
+                  onLinkClick={onLinkClick}
+                />
               ))}
             </div>
           </div>
@@ -167,7 +177,11 @@ const Sidebar = () => {
             <SectionHeader title="Resources" />
             <div className="mt-2 space-y-1">
               {resourcesItems.map((item) => (
-                <SidebarItem key={item.label} {...item} />
+                <SidebarItem
+                  key={item.label}
+                  {...item}
+                  onLinkClick={onLinkClick}
+                />
               ))}
             </div>
           </div>
@@ -175,7 +189,11 @@ const Sidebar = () => {
             <SectionHeader title="Tools" />
             <div className="mt-2 space-y-1">
               {toolsItems.map((item) => (
-                <SidebarItem key={item.label} {...item} />
+                <SidebarItem
+                  key={item.label}
+                  {...item}
+                  onLinkClick={onLinkClick}
+                />
               ))}
             </div>
           </div>
