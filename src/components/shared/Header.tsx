@@ -34,7 +34,7 @@ const Header = () => {
 
   return (
     // The main header container is no longer sticky
-    <header className="sticky top-0 z-50 border-b border-gray-800 ">
+    <header className="sticky backdrop-blur-sm  top-0 z-50 border-b border-gray-800 ">
       <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex relative items-center justify-between h-20">
           {/* Logo - Just the text name */}

@@ -9,11 +9,11 @@ import AboutPage from "../Pages/About/AboutPage";
 import Layout from "../Pages/library/Layout";
 import LibraryHome from "./../components/Library/components/LibraryHome";
 import Popular from "../components/Library/components/Popular";
-import ProductRequests from "../components/Library/components/ProductRequests";
 import Saved from "../components/Library/components/Saved";
 import ProductDetailsPage from "../Pages/library/ProductDetailsPage";
 import SpecialDeals from "../components/Library/components/SpecialDeals";
 import BookCoverTemplates from "../components/Library/components/BookCoverTemplates";
+import Account from "../components/Library/components/Account";
 
 export const router = createBrowserRouter([
   {
@@ -62,10 +62,7 @@ export const router = createBrowserRouter([
         path: "/library/popular",
         element: <Popular />,
       },
-      {
-        path: "/library/product-requests",
-        element: <ProductRequests />,
-      },
+
       {
         path: "/library/book-cover-templates",
         element: <BookCoverTemplates />,
@@ -77,6 +74,10 @@ export const router = createBrowserRouter([
       {
         path: "/library/special-deals",
         element: <SpecialDeals />,
+      },
+      {
+        path: "/library/account",
+        element: <Account />,
       },
     ],
   },

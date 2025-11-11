@@ -2,15 +2,15 @@ import React from "react";
 import {
   Home,
   Flame,
-  Lightbulb,
+  // Lightbulb,
   Bookmark,
-  Gift,
+  // Gift,
   GraduationCap,
   RectangleHorizontal,
   Image,
-  FileText,
-  Pencil,
-  Calculator,
+  // FileText,
+  // Pencil,
+  // Calculator,
   ChevronsUpDown,
   Download,
   Star,
@@ -18,6 +18,7 @@ import {
   Users,
   Key,
   LogOut,
+  User,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthProvider"; // AuthProvider ইম্পোর্ট করতে হবে
@@ -40,21 +41,16 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
   const masterLibraryItems = [
     { icon: Home, label: "Home", link: "/library" },
     { icon: Flame, label: "Popular", link: "/library/popular" },
-    {
-      icon: Lightbulb,
-      label: "Product Requests",
-      link: "/library/product-requests",
-    },
     { icon: Bookmark, label: "Saved", link: "/library/saved" },
   ];
 
   const resourcesItems = [
-    {
-      icon: Gift,
-      label: "Special Deals",
-      badge: "NEW",
-      link: "/library/special-deals",
-    },
+    // {
+    //   icon: Gift,
+    //   label: "Special Deals",
+    //   badge: "NEW",
+    //   link: "/library/special-deals",
+    // },
     {
       icon: GraduationCap,
       label: "Digital Product University",
@@ -73,25 +69,25 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
     },
   ];
 
-  const toolsItems = [
-    { icon: FileText, label: "PDF Rebrander", link: "/library/pdf-rebrander" },
-    {
-      icon: Pencil,
-      label: "Product Descriptions",
-      link: "/library/product-descriptions",
-    },
-    { icon: Lightbulb, label: "Product Ideas", link: "/library/product-ideas" },
-    {
-      icon: FileText,
-      label: "Book Title Generator",
-      link: "/library/book-title-generator",
-    },
-    {
-      icon: Calculator,
-      label: "Revenue Calculator",
-      link: "/library/revenue-calculator",
-    },
-  ];
+  // const toolsItems = [
+  //   { icon: FileText, label: "PDF Rebrander", link: "/library/pdf-rebrander" },
+  //   {
+  //     icon: Pencil,
+  //     label: "Product Descriptions",
+  //     link: "/library/product-descriptions",
+  //   },
+  //   { icon: Lightbulb, label: "Product Ideas", link: "/library/product-ideas" },
+  //   {
+  //     icon: FileText,
+  //     label: "Book Title Generator",
+  //     link: "/library/book-title-generator",
+  //   },
+  //   {
+  //     icon: Calculator,
+  //     label: "Revenue Calculator",
+  //     link: "/library/revenue-calculator",
+  //   },
+  // ];
 
   const SidebarItem = ({
     icon: Icon,
@@ -185,7 +181,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
               ))}
             </div>
           </div>
-          <div>
+          {/* <div>
             <SectionHeader title="Tools" />
             <div className="mt-2 space-y-1">
               {toolsItems.map((item) => (
@@ -196,7 +192,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
                 />
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -245,6 +241,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
             <DropdownMenuItem>
               <Star className="mr-2 h-4 w-4" />
               <span>Updates until</span>
+              <span className="ml-auto text-xs text-gray-400">Lifetime</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <User className="mr-2 h-4 w-4" />
+              <Link to={'/library/account'}>Account</Link>
               <span className="ml-auto text-xs text-gray-400">Lifetime</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
