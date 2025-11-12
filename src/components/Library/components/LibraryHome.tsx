@@ -1,146 +1,86 @@
-import React, { useState, useEffect } from "react";
-import { Download, ArrowRight } from "lucide-react";
+import { ChevronsUpDown, Search } from "lucide-react";
 import HeadingGenerator from "../../../utils/HeadingGenerator";
+import { Input } from "../../ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../../ui/dropdown-menu";
 
 const LibraryHome = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const carouselData = [
-    {
-      title: "Phishing Exposed",
-      subtitle:
-        "Ebook designed to help your customers spot phishing attacks early, avoid costly mistakes, and stay safe while using email and the internet.",
-      downloadText: "Download",
-      learnMoreText: "Learn More",
-      bookImage:
-        "https://i2-prod.walesonline.co.uk/incoming/article6890072.ece/ALTERNATES/s615b/hp1.jpg",
-    },
-    {
-      title: "Digital Marketing Mastery",
-      subtitle:
-        "Complete guide to modern digital marketing strategies, social media optimization, and conversion rate improvement techniques.",
-      downloadText: "Download",
-      learnMoreText: "Learn More",
-      bookImage:
-        "https://i2-prod.walesonline.co.uk/incoming/article6890072.ece/ALTERNATES/s615b/hp1.jpg",
-    },
-    {
-      title: "E-commerce Success",
-      subtitle:
-        "Step-by-step blueprint for building and scaling profitable online stores with proven strategies and real-world examples.",
-      downloadText: "Download",
-      learnMoreText: "Learn More",
-      bookImage:
-        "https://i2-prod.walesonline.co.uk/incoming/article6890072.ece/ALTERNATES/s615b/hp1.jpg",
-    },
-    {
-      title: "Startup Funding Guide",
-      subtitle:
-        "Comprehensive resource covering all aspects of startup funding, from bootstrapping to venture capital and everything in between.",
-      downloadText: "Download",
-      learnMoreText: "Learn More",
-      bookImage:
-        "https://i2-prod.walesonline.co.uk/incoming/article6890072.ece/ALTERNATES/s615b/hp1.jpg",
-    },
-    {
-      title: "Content Creation Pro",
-      subtitle:
-        "Professional content creation strategies for social media, blogs, and marketing campaigns that drive engagement and conversions.",
-      downloadText: "Download",
-      learnMoreText: "Learn More",
-      bookImage:
-        "https://i2-prod.walesonline.co.uk/incoming/article6890072.ece/ALTERNATES/s615b/hp1.jpg",
-    },
+  const Tags = [
+    "digital marketing",
+    "content marketing",
+    "personal development",
+    "lead generation",
+    "startups",
+    "productivity",
+    "mindset",
   ];
-
-  // Auto-change carousel every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % carouselData.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [carouselData.length]);
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
-
-  const currentData = carouselData[currentSlide];
-
   return (
     <div className="p-8 overflow-y-auto h-screen ">
-      {/* Header Section */}
-      {/* <div className="mb-8">
-        <h1 className="text-4xl font-bold text-black mb-2">Resource Library</h1>
-        <p className="text-gray-600 text-lg">
-          Browse our collection of entrepreneurial resources, tools, and templates
-        </p>
-      </div> */}
       <HeadingGenerator
         heading="Resource Library"
         subtitle="Browse our collection of entrepreneurial resources, tools, and templates"
       />
-
-      {/* Carousel Section */}
-      <div className="relative">
-        <div className="bg-black rounded-2xl p-4 lg:p-8 min-h-[30vw] flex items-center">
-          <div className="lg:flex-1 flex items-center justify-between ">
-            {/* Left Side - Content */}
-            <div className="lg:flex-1 lg:pr-8">
-              <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4">
-                {currentData.title}
-              </h2>
-              <p className="text-white text-base lg:text-lg mb-6 leading-relaxed">
-                {currentData.subtitle}
-              </p>
-
-              {/* Action Buttons */}
-              <div className="flex gap-2 lg:gap-4">
-                <button className="bg-red-600 hover:bg-red-700 text-white px-6 lg:py-3 rounded-lg flex items-center gap-2 transition-colors lg:text-base text-sm">
-                  <Download className="w-5 h-5" />
-                  {currentData.downloadText}
-                </button>
-                <button className="border-2 hover:bg-gray-800 text-white px-3 py-4 lg:px-6 lg:py-3 rounded-lg flex items-center gap-2 transition-colors lg:text-base text-sm">
-                  {currentData.learnMoreText}
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              </div>
+      <section className="border-2 space-y-7">
+        <h1 className="max-w-3xl text-center mx-auto font-bold text-3xl md:text-5xl">
+          Discover Digital Products That Grow Your Bussiness
+        </h1>
+        <section className=" mx-auto max-w-5xl grid grid-cols-6 gap-1">
+          <div className="relative col-span-4 ">
+            <div className="absolute left-2 top-3 text-gray-400 flex gap-2">
+              <Search />
+              <p>Search Product...</p>
             </div>
+            <Input type="search" className="h-12 rounded-full " />
+          </div>
+          <div className="relative col-span-2 ">
+            <div className="absolute left-2 top-3 text-gray-400 flex gap-2">
+              <Search className="text-red-400" />
+              <p>Search Category...</p>
+            </div>
+            <Input type="search" className="h-12 rounded-full " />
+          </div>
+        </section>
 
-            {/* Right Side - Book Image */}
-            <div className="flex-1 flex justify-center">
-              <div className="">
-                <img
-                  src={currentData.bookImage}
-                  alt={currentData.title}
-                  className="w-full hidden lg:block lg:h-[450px] rounded-lg shadow-lg shadow-gray-500 object-cover"
-                  onError={(e) => {
-                    // Fallback to a placeholder if image fails to load
-                    e.currentTarget.src =
-                      "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDMwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjE1MCIgeT0iMjAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5Q0EzQUYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkJvb2sgSW1hZ2U8L3RleHQ+Cjwvc3ZnPg==";
-                  }}
-                />
-              </div>
+        <section className="">
+          <div className="grid grid-cols-4 gap-1 max-w-sm text-muted-foreground">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div
+                  id="filter by tag"
+                  className=" col-span-2 p-2 border rounded-full flex justify-between items-center hover:bg-muted-foreground/10  "
+                >
+                  {" "}
+                  <p className="">Filter by tag</p>
+                  <ChevronsUpDown />
+                </div>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent
+                className="w-[240px] mb-2 overflow-y-auto"
+                side="bottom"
+                align="start"
+                sideOffset={8}
+              >
+                {Tags.map((tag, id) => (
+                  <DropdownMenuItem key={id}>{tag}</DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <div
+              id="filter by tag"
+              className=" col-span-2 p-2 border rounded-full flex justify-between items-center hover:bg-muted-foreground/10"
+            >
+              {" "}
+              <p className="">Filter by tag</p>
+              <ChevronsUpDown />
             </div>
           </div>
-        </div>
-
-        {/* Navigation Indicators */}
-        <div className="flex justify-center mt-6 gap-2">
-          {carouselData.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-colors ${
-                index === currentSlide
-                  ? "bg-red-500"
-                  : "bg-gray-400 hover:bg-gray-500"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
+        </section>
+      </section>
     </div>
   );
 };
