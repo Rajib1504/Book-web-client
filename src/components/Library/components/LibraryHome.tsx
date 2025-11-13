@@ -1,4 +1,5 @@
-import { ChevronsUpDown, Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ChevronsUpDown, Search, X } from "lucide-react";
 import HeadingGenerator from "../../../utils/HeadingGenerator";
 import { Input } from "../../ui/input";
 import {
@@ -7,9 +8,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
+import { Button } from "../../ui/button";
+import { Badge } from "../../ui/badge";
+import ProductCard, { type Product } from "./ProductCard"; // Import the new card and type
+import { Skeleton } from "../../ui/skeleton"; // Import Skeleton for loading
 
 const LibraryHome = () => {
-  const Tags = [
+  // --- MOCK DATA FOR FILTERS (replace with API data if available) ---
+  const allCategories = [
+    "Ebook",
+    "Email Template",
+    "Marketing",
+    "Design",
+    "Productivity",
+  ];
+  const allTags = [
     "digital marketing",
     "content marketing",
     "personal development",
@@ -18,68 +31,240 @@ const LibraryHome = () => {
     "productivity",
     "mindset",
   ];
+
+  // --- STATE MANAGEMENT ---
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Filter States
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+  // --- DATA FETCHING ---
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        // Using /books.json as seen in Popular.tsx and Saved.tsx
+        // I'll add mock category/tags to match the filtering
+        const response = await fetch("/books.json");
+        let data: Product[] = await response.json();
+
+        // Add mock data for filtering
+        data = data.map((item, index) => ({
+          ...item,
+          category: allCategories[index % allCategories.length],
+          tags: [
+            allTags[index % allTags.length],
+            allTags[(index + 1) % allTags.length],
+          ],
+          subtitle: item.title.split(" ").slice(0, 10).join(" ") + "...", // Add mock subtitle
+        }));
+
+        setProducts(data);
+        setFilteredProducts(data);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  // --- FILTERING LOGIC ---
+  useEffect(() => {
+    let result = products;
+
+    // Filter by Search Term
+    if (searchTerm) {
+      result = result.filter((product) =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Filter by Category
+    if (selectedCategory) {
+      result = result.filter(
+        (product) => product.category === selectedCategory
+      );
+    }
+
+    // Filter by Tag
+    if (selectedTag) {
+      result = result.filter((product) => product.tags?.includes(selectedTag));
+    }
+
+    setFilteredProducts(result);
+  }, [searchTerm, selectedCategory, selectedTag, products]);
+
+  // --- HANDLERS ---
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory(null);
+    setSelectedTag(null);
+  };
+
+  const hasActiveFilters = searchTerm || selectedCategory || selectedTag;
+
+  // --- LOADING SKELETON ---
+  const LoadingSkeleton = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <div key={i} className="flex flex-col space-y-3">
+          <Skeleton className="h-64 rounded-xl" />
+          <Skeleton className="h-4 w-[150px]" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+      ))}
+    </div>
+  );
+
   return (
-    <div className="p-8 overflow-y-auto h-screen ">
-      <HeadingGenerator
-        heading="Resource Library"
-        subtitle="Browse our collection of entrepreneurial resources, tools, and templates"
-      />
-      <section className="border-2 space-y-7">
-        <h1 className="max-w-3xl text-center mx-auto font-bold text-3xl md:text-5xl">
-          Discover Digital Products That Grow Your Bussiness
-        </h1>
-        <section className=" mx-auto max-w-5xl grid grid-cols-6 gap-1">
-          <div className="relative col-span-4 ">
-            <div className="absolute left-2 top-3 text-gray-400 flex gap-2">
-              <Search />
-              <p>Search Product...</p>
-            </div>
-            <Input type="search" className="h-12 rounded-full " />
-          </div>
-          <div className="relative col-span-2 ">
-            <div className="absolute left-2 top-3 text-gray-400 flex gap-2">
-              <Search className="text-red-400" />
-              <p>Search Category...</p>
-            </div>
-            <Input type="search" className="h-12 rounded-full " />
-          </div>
-        </section>
+    <div className="px-4 md:px-8 ">
+      {/* --- FILTER & SEARCH SECTION --- */}
+      <section className="sticky top-0 bg-white z-20 py-6 mb-4 border-b border-gray-200">
+        <HeadingGenerator
+          heading="Resource Library"
+          subtitle="Browse our collection of entrepreneurial resources, tools, and templates"
+        />
+        {/* Search Bar */}
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <Input
+            type="search"
+            placeholder="Search all products..."
+            className="h-12 pl-10 rounded-lg bg-gray-50"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
 
-        <section className="">
-          <div className="grid grid-cols-4 gap-1 max-w-sm text-muted-foreground">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <div
-                  id="filter by tag"
-                  className=" col-span-2 p-2 border rounded-full flex justify-between items-center hover:bg-muted-foreground/10  "
-                >
-                  {" "}
-                  <p className="">Filter by tag</p>
-                  <ChevronsUpDown />
-                </div>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent
-                className="w-[240px] mb-2 overflow-y-auto"
-                side="bottom"
-                align="start"
-                sideOffset={8}
+        {/* Filter Dropdowns */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          {/* Category Filter */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto justify-between"
               >
-                {Tags.map((tag, id) => (
-                  <DropdownMenuItem key={id}>{tag}</DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <div
-              id="filter by tag"
-              className=" col-span-2 p-2 border rounded-full flex justify-between items-center hover:bg-muted-foreground/10"
+                {selectedCategory || "Filter by category"}
+                <ChevronsUpDown className="h-4 w-4 opacity-50 ml-2" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-full sm:w-[240px]">
+              {allCategories.map((category) => (
+                <DropdownMenuItem
+                  key={category}
+                  onSelect={() => setSelectedCategory(category)}
+                >
+                  {category}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Tag Filter */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto justify-between"
+              >
+                {selectedTag || "Filter by tag"}
+                <ChevronsUpDown className="h-4 w-4 opacity-50 ml-2" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-full sm:w-[240px]">
+              {allTags.map((tag) => (
+                <DropdownMenuItem
+                  key={tag}
+                  onSelect={() => setSelectedTag(tag)}
+                >
+                  {tag}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        {/* Active Filters Display */}
+        {hasActiveFilters && (
+          <div className="flex flex-wrap items-center gap-2 mt-4">
+            <h4 className="text-sm font-medium text-gray-600">
+              Active Filters:
+            </h4>
+            {searchTerm && (
+              <Badge variant="secondary" className="pl-2">
+                Search: {searchTerm}
+                <button onClick={() => setSearchTerm("")} className="ml-1">
+                  <X className="h-3 w-3" />
+                </button>
+              </Badge>
+            )}
+            {selectedCategory && (
+              <Badge variant="secondary" className="pl-2">
+                {selectedCategory}
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className="ml-1"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </Badge>
+            )}
+            {selectedTag && (
+              <Badge variant="secondary" className="pl-2">
+                {selectedTag}
+                <button onClick={() => setSelectedTag(null)} className="ml-1">
+                  <X className="h-3 w-3" />
+                </button>
+              </Badge>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearFilters}
+              className="text-red-500 hover:text-red-600"
             >
-              {" "}
-              <p className="">Filter by tag</p>
-              <ChevronsUpDown />
-            </div>
+              Clear All
+            </Button>
           </div>
-        </section>
+        )}
+      </section>
+
+      {/* --- PRODUCTS GRID --- */}
+      <section>
+        {loading ? (
+          <LoadingSkeleton />
+        ) : (
+          <>
+            {filteredProducts.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20">
+                <h3 className="text-2xl font-semibold text-black">
+                  No Products Found
+                </h3>
+                <p className="text-gray-500 mt-2">
+                  Try adjusting your filters or search term.
+                </p>
+                <Button variant="link" onClick={clearFilters} className="mt-4">
+                  Clear All Filters
+                </Button>
+              </div>
+            )}
+          </>
+        )}
       </section>
     </div>
   );
