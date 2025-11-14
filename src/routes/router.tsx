@@ -15,6 +15,7 @@ import SpecialDeals from "../components/Library/components/SpecialDeals";
 import BookCoverTemplates from "../components/Library/components/BookCoverTemplates";
 import Account from "../components/Library/components/Account";
 import DigitalProducts from "../components/Library/components/DigitalProducts";
+import ProductMockups from "../components/Library/components/ProductMockups";
 
 export const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
       {
         path: "/library/digital-products",
         element: <DigitalProducts />,
+      },
+      {
+        path: "/library/product-mockups",
+        element: <ProductMockups />,
       },
 
       {

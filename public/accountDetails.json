@@ -1,0 +1,14 @@
+{
+  "email": "ankit@example.com",
+  "plan": {
+    "name": "Light",
+    "status": "expired",
+    "startedOn": "2025-09-09",
+    "expiresOn": "2025-11-12"
+  },
+  "license": {
+    "key": "LIC-2X7F-9K2M-ABCD-2YQ9",
+    "fileUrl": "/licenses/LIC-2X7F-9K2M-ABCD-2YQ9.pdf"
+  },
+  "image": "https://i.pravatar.cc/160?img=5"
+}
