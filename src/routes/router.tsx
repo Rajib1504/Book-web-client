@@ -14,6 +14,7 @@ import ProductDetailsPage from "../Pages/library/ProductDetailsPage";
 import SpecialDeals from "../components/Library/components/SpecialDeals";
 import BookCoverTemplates from "../components/Library/components/BookCoverTemplates";
 import Account from "../components/Library/components/Account";
+import DigitalProducts from "../components/Library/components/DigitalProducts";
 
 export const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ export const router = createBrowserRouter([
       {
         path: "/library/popular",
         element: <Popular />,
+      },
+      {
+        path: "/library/digital-products",
+        element: <DigitalProducts />,
       },
 
       {

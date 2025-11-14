@@ -41,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     {
       icon: GraduationCap,
       label: "Digital Product University",
-      link: "/library/digital-product-university",
+      link: "/library/digital-products",
     },
     {
       icon: RectangleHorizontal,
@@ -201,10 +201,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         >
           <LogOut className="w-5 h-5 text-red-400 flex-shrink-0" />
           <span
-            className={cn(
-              "text-sm font-medium",
-              isCollapsed && "lg:hidden"
-            )}
+            className={cn("text-sm font-medium", isCollapsed && "lg:hidden")}
           >
             Log out
           </span>
