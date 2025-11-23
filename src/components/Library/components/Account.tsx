@@ -12,11 +12,14 @@ import { Badge } from "../../ui/badge";
 import { Separator } from "../../ui/separator";
 import { Eye, Download, CalendarDays, Crown, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+// import { useAuth } from "../../../contexts/AuthProvider";
 
 // NOTE: Adjust the import paths above to match your shadcn/ui setup if different.
 
 export default function Account() {
   // Mocked user data — replace with real data from your store/API
+  // const { user } = useAuth;
+  // const data = user.data;
   const user = {
     name: "Ankit Pandy",
     email: "ankit@example.com",
@@ -638,9 +641,3 @@ export default function Account() {
 //     </section>
 //   );
 // }
-
-
-
-
-
-

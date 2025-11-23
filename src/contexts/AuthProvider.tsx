@@ -8,14 +8,21 @@ import {
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
+interface license {
+  Key: string;
+  issueDate: string;
+  fileUrl: string;
+}
 interface User {
   _id: string;
   name: string;
   email: string;
-  role: "user" | "admin" | "superadmin";
+  role: "user" | "admin";
+  plan: "pro" | "free";
+  license: license;
 }
 
 interface AuthContextType {
@@ -30,6 +37,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  // console.log(user);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -40,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           "Authorization"
         ] = `Bearer ${token}`;
         try {
-          const { data } = await axiosInstance.get("/users/me");
+          const { data } = await axiosInstance.get("/users/profile");
           setUser(data);
         } catch {
           localStorage.removeItem("authToken");

@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
 import { User, LogOut, Settings, Menu } from "lucide-react";
 import { useAuth } from "../../contexts/AuthProvider";
@@ -30,6 +30,8 @@ const navLinks = [
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useAuth();
+  const data = user?.data;
+  // console.log(data);
   const location = useLocation();
 
   return (
@@ -116,7 +118,7 @@ const Header = () => {
                       className="relative h-10 w-10 rounded-full"
                     >
                       <div className="flex items-center justify-center h-full w-full border-blue-600 rounded-full text-white text-lg font-semibold">
-                        {user?.name.charAt(0).toUpperCase()}
+                        {data?.name?.charAt(0).toLocaleUpperCase()}
                       </div>
                     </Button>
                   </DropdownMenuTrigger>
@@ -124,17 +126,17 @@ const Header = () => {
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
                         <p className="text-sm font-medium leading-none">
-                          {user?.name}
+                          {data?.name}
                         </p>
                         <p className="text-xs leading-none text-muted-foreground">
-                          {user?.email}
+                          {data?.email}
                         </p>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
                       <User className="mr-2 h-4 w-4" />
-                      <span>Profile</span>
+                      <Link to={"/library/account"}>Profile</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Settings className="mr-2 h-4 w-4" />

@@ -24,6 +24,7 @@ const LibraryNavbar: React.FC<LibraryNavbarProps> = ({
   toggleSidebar,
 }) => {
   const { user } = useAuth();
+  // console.log(user.data);
 
   return (
     <header className="sticky top-0 z-10 flex py-4 items-center gap-4 border-b bg-white px-4 md:px-6">
@@ -66,13 +67,11 @@ const LibraryNavbar: React.FC<LibraryNavbarProps> = ({
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full">
               <Avatar className="h-8 w-8">
-                <AvatarImage
-                  src={user?.name} // Assuming user object might have an image
-                  alt={user?.name || "User"}
-                />
-                <AvatarFallback className="bg-red-100 text-red-600">
-                  {user ? user.name.charAt(0).toUpperCase() : "A"}
-                </AvatarFallback>
+                {/* <AvatarImage
+                  src={user?.data.name.charAt(0).toLocaleUpperCase()}
+                  alt={user?.data?.name || "user"}
+                /> */}
+                <AvatarFallback className="bg-red-100 text-red-600">{user?.data?.name?.charAt(0)?.toUpperCase()}</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
@@ -80,10 +79,10 @@ const LibraryNavbar: React.FC<LibraryNavbarProps> = ({
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">
-                  {user?.name || "User Name"}
+                  {user?.data?.name || "User Name"}
                 </p>
                 <p className="text-xs leading-none text-gray-500">
-                  {user?.email || "user@example.com"}
+                  {user?.data?.email || "user@example.com"}
                 </p>
               </div>
             </DropdownMenuLabel>
