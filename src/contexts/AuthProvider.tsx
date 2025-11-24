@@ -5,11 +5,7 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
-import axios from "axios";
-
-const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-});
+import { axiosInstance } from "./../lib/axios";
 
 interface license {
   Key: string;
@@ -81,6 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -88,5 +85,3 @@ export const useAuth = () => {
   }
   return context;
 };
-
-export { axiosInstance };

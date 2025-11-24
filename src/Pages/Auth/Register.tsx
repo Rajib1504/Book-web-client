@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useRef, type FormEvent } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
-import { axiosInstance, useAuth } from "../../contexts/AuthProvider";
+import { useAuth } from "../../contexts/AuthProvider";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
@@ -23,6 +23,7 @@ import {
   Globe,
   Users
 } from "lucide-react";
+import { axiosInstance } from "../../lib/axios";
 
 const Register = () => {
   const [name, setName] = useState("");

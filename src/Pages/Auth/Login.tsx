@@ -1,23 +1,24 @@
 import { useState, useEffect, useRef, type FormEvent } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
-import { axiosInstance, useAuth } from "../../contexts/AuthProvider";
+import { useAuth } from "../../contexts/AuthProvider";
 import { Button } from "../../components/ui/button";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { gsap } from "gsap";
-import { 
-  BookOpen, 
-  Eye, 
-  EyeOff, 
-  Mail, 
-  Lock, 
-  // Sparkles, 
-  Shield, 
+import {
+  BookOpen,
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  // Sparkles,
+  Shield,
   Zap,
   ArrowRight,
   // CheckCircle,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
+import { axiosInstance } from "../../lib/axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -26,10 +27,10 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFocused, setIsFocused] = useState("");
-  
+
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -42,17 +43,22 @@ const Login = () => {
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
-    if (containerRef.current && formRef.current && headerRef.current && particlesRef.current) {
+    if (
+      containerRef.current &&
+      formRef.current &&
+      headerRef.current &&
+      particlesRef.current
+    ) {
       // Initial animations
       gsap.set([formRef.current, headerRef.current], { opacity: 0, y: 50 });
-      
+
       // Header entrance animation
       gsap.to(headerRef.current, {
         opacity: 1,
         y: 0,
         duration: 1.2,
         ease: "power3.out",
-        delay: 0.3
+        delay: 0.3,
       });
 
       // Form entrance animation
@@ -61,7 +67,7 @@ const Login = () => {
         y: 0,
         duration: 1.2,
         ease: "power3.out",
-        delay: 0.6
+        delay: 0.6,
       });
 
       // Floating particles animation
@@ -72,7 +78,7 @@ const Login = () => {
         ease: "power2.inOut",
         yoyo: true,
         repeat: -1,
-        stagger: 0.5
+        stagger: 0.5,
       });
 
       // Gradient orb animation
@@ -81,7 +87,7 @@ const Login = () => {
         duration: 8,
         ease: "power2.inOut",
         yoyo: true,
-        repeat: -1
+        repeat: -1,
       });
 
       // Security pattern animation
@@ -89,7 +95,7 @@ const Login = () => {
         rotation: 360,
         duration: 20,
         ease: "none",
-        repeat: -1
+        repeat: -1,
       });
     }
   }, []);
@@ -98,13 +104,13 @@ const Login = () => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
-    
+
     try {
       const { data } = await axiosInstance.post("/auth/login", {
         email,
         password,
       });
-      
+
       // Success animation
       gsap.to(formRef.current, {
         scale: 1.02,
@@ -115,7 +121,7 @@ const Login = () => {
         onComplete: () => {
           login(data.token, data);
           navigate("/", { replace: true });
-        }
+        },
       });
     } catch {
       setError("Invalid credentials. Please try again.");
@@ -125,7 +131,7 @@ const Login = () => {
         duration: 0.1,
         ease: "power2.out",
         yoyo: true,
-        repeat: 5
+        repeat: 5,
       });
     } finally {
       setIsLoading(false);
@@ -137,7 +143,7 @@ const Login = () => {
     gsap.to(`#${field}-container`, {
       scale: 1.02,
       duration: 0.3,
-      ease: "power2.out"
+      ease: "power2.out",
     });
   };
 
@@ -146,25 +152,31 @@ const Login = () => {
     gsap.to(`#${field}-container`, {
       scale: 1,
       duration: 0.3,
-      ease: "power2.out"
+      ease: "power2.out",
     });
   };
 
   return (
-    <div ref={containerRef} className="relative min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white overflow-hidden">
+    <div
+      ref={containerRef}
+      className="relative min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white overflow-hidden"
+    >
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Gradient Orbs */}
         <div className="absolute top-20 left-20 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl floating-particle gradient-orb"></div>
         <div className="absolute bottom-20 right-20 w-80 h-80 bg-purple-500/4 rounded-full blur-3xl floating-particle"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-red-500/3 rounded-full blur-3xl floating-particle"></div>
-        
+
         {/* Grid Pattern */}
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-            backgroundSize: '60px 60px'
-          }}></div>
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
+              backgroundSize: "60px 60px",
+            }}
+          ></div>
         </div>
 
         {/* Security Patterns */}
@@ -195,35 +207,41 @@ const Login = () => {
             <div className="inline-flex items-center justify-center mb-6 w-20 h-20 bg-gradient-to-br from-red-500/20 to-red-600/20 border border-red-500/30 rounded-2xl">
               <BookOpen className="h-10 w-10 text-red-400" />
             </div>
-            
+
             <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-white via-gray-100 to-red-400 bg-clip-text text-transparent mb-4">
               Welcome Back
             </h1>
-            
+
             <p className="text-xl text-gray-300 leading-relaxed">
-              Sign in to access your digital library and continue your reading journey
+              Sign in to access your digital library and continue your reading
+              journey
             </p>
           </div>
 
           {/* Enhanced Form */}
           <div className="relative">
-            <form ref={formRef}  onSubmit={handleLogin} className="space-y-8">
+            <form ref={formRef} onSubmit={handleLogin} className="space-y-8">
               {/* Email Field */}
               <div id="email-container" className="relative group">
-                <Label htmlFor="email" className="text-sm font-medium text-gray-300 mb-3 block">
+                <Label
+                  htmlFor="email"
+                  className="text-sm font-medium text-gray-300 mb-3 block"
+                >
                   Email Address
                 </Label>
                 <div className="relative">
-                  <Mail className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
-                    isFocused === 'email' ? 'text-red-400' : 'text-gray-500'
-                  }`} />
+                  <Mail
+                    className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
+                      isFocused === "email" ? "text-red-400" : "text-gray-500"
+                    }`}
+                  />
                   <Input
                     id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    onFocus={() => handleInputFocus('email')}
-                    onBlur={() => handleInputBlur('email')}
+                    onFocus={() => handleInputFocus("email")}
+                    onBlur={() => handleInputBlur("email")}
                     required
                     className="pl-12 pr-4 py-4 bg-gradient-to-r from-gray-900/50 to-gray-800/50 border-2 border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 transition-all duration-300"
                     placeholder="Enter your email"
@@ -233,20 +251,27 @@ const Login = () => {
 
               {/* Password Field */}
               <div id="password-container" className="relative group">
-                <Label htmlFor="password" className="text-sm font-medium text-gray-300 mb-3 block">
+                <Label
+                  htmlFor="password"
+                  className="text-sm font-medium text-gray-300 mb-3 block"
+                >
                   Password
                 </Label>
                 <div className="relative">
-                  <Lock className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
-                    isFocused === 'password' ? 'text-red-400' : 'text-gray-500'
-                  }`} />
+                  <Lock
+                    className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
+                      isFocused === "password"
+                        ? "text-red-400"
+                        : "text-gray-500"
+                    }`}
+                  />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    onFocus={() => handleInputFocus('password')}
-                    onBlur={() => handleInputBlur('password')}
+                    onFocus={() => handleInputFocus("password")}
+                    onBlur={() => handleInputBlur("password")}
                     required
                     className="pl-12 pr-12 py-4 bg-gradient-to-r from-gray-900/50 to-gray-800/50 border-2 border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 transition-all duration-300"
                     placeholder="Enter your password"
@@ -256,7 +281,11 @@ const Login = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors duration-200"
                   >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -309,7 +338,7 @@ const Login = () => {
               >
                 <span>Create Account</span>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-                
+
                 {/* Animated Underline */}
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></div>
               </NavLink>
