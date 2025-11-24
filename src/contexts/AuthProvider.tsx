@@ -27,6 +27,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (token: string, userData: User) => void;
   logout: () => void;
+  updateUser: (userData: User) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -45,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         ] = `Bearer ${token}`;
         try {
           const { data } = await axiosInstance.get("/users/profile");
-          setUser(data);
+          setUser(data.data);
         } catch {
           localStorage.removeItem("authToken");
           delete axiosInstance.defaults.headers.common["Authorization"];
@@ -67,10 +68,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     delete axiosInstance.defaults.headers.common["Authorization"];
     setUser(null);
   };
-
+  const updateUser = (userData: User) => {
+    setUser(userData);
+  };
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated: !!user, isLoading, login, logout }}
+      value={{
+        user,
+        isAuthenticated: !!user,
+        isLoading,
+        login,
+        logout,
+        updateUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

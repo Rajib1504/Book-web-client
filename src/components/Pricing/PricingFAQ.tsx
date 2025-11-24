@@ -16,7 +16,7 @@ const pricingFaqs = [
   {
     question: "Is this a subscription or a one-time payment?",
     answer:
-      "This is a one-time payment! You pay once and get lifetime access to all the products included in your chosen plan. There are no recurring fees or hidden charges.",
+      "This is a one-time payment! You pay once and get lifetime access to all the products included in the library. There are no recurring fees or hidden charges.", // Updated text
     icon: Zap,
     category: "Payment"
   },
@@ -37,7 +37,7 @@ const pricingFaqs = [
   {
     question: "If I purchase now, will I get access to future updates?",
     answer:
-      "Yes! If you choose the 'Library Pro' plan, you get access to all future product releases forever. The 'Library Lite' plan includes 3 months of new releases, with an option to extend.",
+      "Yes! You get instant access to all future product releases forever. We add new premium products every week, and you'll never be charged extra for them.", // Updated text
     icon: Clock,
     category: "Updates"
   },
