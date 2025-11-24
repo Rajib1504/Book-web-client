@@ -16,6 +16,7 @@ import BookCoverTemplates from "../components/Library/components/BookCoverTempla
 import Account from "../components/Library/components/Account";
 import DigitalProducts from "../components/Library/components/DigitalProducts";
 import ProductMockups from "../components/Library/components/ProductMockups";
+import PrivateRoutes from "./PrivateRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -49,45 +50,50 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/library",
-    element: <Layout />,
+    element: <PrivateRoutes />,
     children: [
       {
-        path: "",
-        element: <LibraryHome />,
-      },
-      {
-        path: "/library/product/:id",
-        element: <ProductDetailsPage />,
-      },
-      {
-        path: "/library/popular",
-        element: <Popular />,
-      },
-      {
-        path: "/library/digital-products",
-        element: <DigitalProducts />,
-      },
-      {
-        path: "/library/product-mockups",
-        element: <ProductMockups />,
-      },
+        path: "/library",
+        element: <Layout />,
+        children: [
+          {
+            path: "",
+            element: <LibraryHome />,
+          },
+          {
+            path: "/library/product/:id",
+            element: <ProductDetailsPage />,
+          },
+          {
+            path: "/library/popular",
+            element: <Popular />,
+          },
+          {
+            path: "/library/digital-products",
+            element: <DigitalProducts />,
+          },
+          {
+            path: "/library/product-mockups",
+            element: <ProductMockups />,
+          },
 
-      {
-        path: "/library/book-cover-templates",
-        element: <BookCoverTemplates />,
-      },
-      {
-        path: "/library/saved",
-        element: <Saved />,
-      },
-      {
-        path: "/library/special-deals",
-        element: <SpecialDeals />,
-      },
-      {
-        path: "/library/account",
-        element: <Account />,
+          {
+            path: "/library/book-cover-templates",
+            element: <BookCoverTemplates />,
+          },
+          {
+            path: "/library/saved",
+            element: <Saved />,
+          },
+          {
+            path: "/library/special-deals",
+            element: <SpecialDeals />,
+          },
+          {
+            path: "/library/account",
+            element: <Account />,
+          },
+        ],
       },
     ],
   },

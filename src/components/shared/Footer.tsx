@@ -1,5 +1,5 @@
 import { Twitter, Linkedin, Globe } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -77,19 +77,19 @@ const Footer = () => {
             <h3 className="font-semibold tracking-wider uppercase">Legal</h3>
             <ul className="mt-4 space-y-2">
               <li>
-                <a href="#" className="text-gray-400 hover:text-white">
+                <Link to={'/'} className="text-gray-400 hover:text-white">
                   Terms of Service
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white">
+                <Link to={'/'} className="text-gray-400 hover:text-white">
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white">
+                <Link to={'/'} className="text-gray-400 hover:text-white">
                   Cookie Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
