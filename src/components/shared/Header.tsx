@@ -1,6 +1,6 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
-import { User, LogOut, Settings, Menu } from "lucide-react";
+import { User, LogOut, Menu } from "lucide-react";
 import { useAuth } from "../../contexts/AuthProvider";
 import {
   DropdownMenu,
@@ -138,10 +138,10 @@ const Header = () => {
                       <User className="mr-2 h-4 w-4" />
                       <Link to={"/library/account"}>Profile</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    {/* <DropdownMenuItem>
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Settings</span>
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={logout} className="text-red-500">
                       <LogOut className="mr-2 h-4 w-4" />

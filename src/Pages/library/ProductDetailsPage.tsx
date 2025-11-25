@@ -66,7 +66,7 @@ const ProductDetailsPage = () => {
       try {
         // ২. রিয়েল API কল (/books/:id)
         const { data } = await axiosInstance.get(`/books/${id}`);
-        
+
         if (data.success) {
           // ব্যাকএন্ডের _id কে ফ্রন্টএন্ডের id তে ম্যাপ করা
           setProduct({
@@ -436,7 +436,10 @@ const ProductDetailsPage = () => {
         <Separator className="my-12" />
         {/* ৩. রিলেটেড প্রোডাক্টের জন্য ক্যাটাগরি ও আইডি পাস করা হলো */}
         {/* (তবে RelatedProducts কম্পোনেন্টটি এখনো আপডেট করতে হবে) */}
-        <RelatedProducts />
+        <RelatedProducts
+          category={product.category}
+          currentBookId={product._id}
+        />
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { axiosInstance } from "../../lib/axios";
+import { Skeleton } from "../ui/skeleton";
 
 interface RelatedProduct {
   id: string;
@@ -9,21 +11,32 @@ interface RelatedProduct {
   cover_image: string;
   category: string;
 }
-
-const RelatedProducts = () => {
+interface RelatedProductsProps {
+  category?: string;
+  currentBookId?: string;
+}
+const RelatedProducts: React.FC<RelatedProductsProps> = ({
+  category,
+  currentBookId,
+}) => {
   const [relatedProducts, setRelatedProducts] = useState<RelatedProduct[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!category && !currentBookId) {
+      return;
+    }
     const fetchRelatedProducts = async () => {
       try {
-        const response = await fetch("/products.json");
-        if (!response.ok) {
+        const { data } = await axiosInstance.get(
+          `/books/related/${category}/${currentBookId}`
+        );
+        if (!data.ok) {
           throw new Error("Network response was not ok");
         }
-        const products: RelatedProduct[] = await response.json();
+
         // Take first 4 products as related products
-        setRelatedProducts(products.slice(0, 4));
+        setRelatedProducts(data.slice(0, 4));
       } catch (error) {
         console.error("Failed to fetch related products:", error);
       } finally {
@@ -32,7 +45,7 @@ const RelatedProducts = () => {
     };
 
     fetchRelatedProducts();
-  }, []);
+  }, [category, currentBookId]);
 
   if (loading) {
     return (
@@ -40,16 +53,18 @@ const RelatedProducts = () => {
         <h2 className="text-2xl font-bold mb-6 text-black">Related Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {Array.from({ length: 4 }, (_, index) => (
-            <div key={index} className="bg-gray-100 rounded-lg p-4 animate-pulse">
-              <div className="w-full h-48 bg-gray-200 rounded-lg mb-4"></div>
-              <div className="h-4 bg-gray-200 rounded mb-2"></div>
-              <div className="h-3 bg-gray-200 rounded mb-2"></div>
-              <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+            <div key={index} className="space-y-3">
+              <Skeleton className="w-full h-48 rounded-lg" />
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-3 w-1/2" />
             </div>
           ))}
         </div>
       </div>
     );
+  }
+  if (relatedProducts.length === 0) {
+    return null;
   }
 
   return (
