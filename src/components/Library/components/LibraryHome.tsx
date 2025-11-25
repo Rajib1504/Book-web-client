@@ -10,11 +10,13 @@ import {
 } from "../../ui/dropdown-menu";
 import { Button } from "../../ui/button";
 import { Badge } from "../../ui/badge";
-import ProductCard, { type Product } from "./ProductCard"; // Import the new card and type
-import { Skeleton } from "../../ui/skeleton"; // Import Skeleton for loading
+import ProductCard, { type Product } from "./ProductCard";
+import { Skeleton } from "../../ui/skeleton";
+import { axiosInstance } from "../../../lib/axios"; // ১. Axios ইম্পোর্ট
 
 const LibraryHome = () => {
-  // --- MOCK DATA FOR FILTERS (replace with API data if available) ---
+  // --- MOCK DATA FOR FILTERS ---
+  // (ভবিষ্যতে এগুলোও API থেকে আনা যেতে পারে)
   const allCategories = [
     "Ebook",
     "Email Template",
@@ -34,7 +36,6 @@ const LibraryHome = () => {
 
   // --- STATE MANAGEMENT ---
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Filter States
@@ -42,63 +43,48 @@ const LibraryHome = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-  // --- DATA FETCHING ---
+  // --- DATA FETCHING FUNCTION ---
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      // ২. কুইরি প্যারামিটার তৈরি
+      const params: Record<string, string> = {};
+      
+      if (searchTerm) params.search = searchTerm;
+      if (selectedCategory) params.category = selectedCategory;
+      if (selectedTag) params.tags = selectedTag;
+
+      // ৩. API কল
+      const { data } = await axiosInstance.get("/books", { params });
+      
+      // ৪. ডাটা ম্যাপিং (Database _id -> Frontend id)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const mappedProducts = data.data.map((book: any) => ({
+        ...book,
+        id: book._id, // _id কে id তে কনভার্ট করা হলো
+        // যদি আইকন ডাটাবেসে না থাকে তবে ডিফল্ট সেট করা
+        icon: book.icon || "book", 
+      }));
+
+      setProducts(mappedProducts);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // --- EFFECT FOR FETCHING & FILTERING ---
   useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        // Using /books.json as seen in Popular.tsx and Saved.tsx
-        // I'll add mock category/tags to match the filtering
-        const response = await fetch("/books.json");
-        let data: Product[] = await response.json();
+    // ৫. Debounce লজিক (সার্চের সময় লোড কমানোর জন্য)
+    const timeoutId = setTimeout(() => {
+      fetchProducts();
+    }, 500); // ৫০০ মিলিসেকেন্ড অপেক্ষা করবে টাইপ শেষ হওয়ার পর
 
-        // Add mock data for filtering
-        data = data.map((item, index) => ({
-          ...item,
-          category: allCategories[index % allCategories.length],
-          tags: [
-            allTags[index % allTags.length],
-            allTags[(index + 1) % allTags.length],
-          ],
-          subtitle: item.title.split(" ").slice(0, 10).join(" ") + "...", // Add mock subtitle
-        }));
-
-        setProducts(data);
-        setFilteredProducts(data);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, []);
-
-  // --- FILTERING LOGIC ---
-  useEffect(() => {
-    let result = products;
-
-    // Filter by Search Term
-    if (searchTerm) {
-      result = result.filter((product) =>
-        product.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Filter by Category
-    if (selectedCategory) {
-      result = result.filter(
-        (product) => product.category === selectedCategory
-      );
-    }
-
-    // Filter by Tag
-    if (selectedTag) {
-      result = result.filter((product) => product.tags?.includes(selectedTag));
-    }
-
-    setFilteredProducts(result);
-  }, [searchTerm, selectedCategory, selectedTag, products]);
+    return () => clearTimeout(timeoutId);
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, selectedCategory, selectedTag]); // এই ভ্যালুগুলো পাল্টালে আবার ফেচ হবে
 
   // --- HANDLERS ---
   const clearFilters = () => {
@@ -244,9 +230,9 @@ const LibraryHome = () => {
           <LoadingSkeleton />
         ) : (
           <>
-            {filteredProducts.length > 0 ? (
+            {products.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredProducts.map((product) => (
+                {products.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>

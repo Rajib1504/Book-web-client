@@ -17,10 +17,12 @@ import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
 import { Separator } from "../../components/ui/separator";
 import { Skeleton } from "../../components/ui/skeleton";
+import { axiosInstance } from "../../lib/axios"; // ১. Axios ইম্পোর্ট
 
 // Define the type for our product data
 interface Product {
-  id: string;
+  id: string; // Frontend uses id
+  _id?: string; // Backend sends _id
   title: string;
   subtitle: string;
   category: string;
@@ -49,7 +51,7 @@ const ProductDetailsPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Generate multiple product images using the same URL
+  // Generate multiple product images using the same URL (Demo logic maintained)
   const productImages = [
     product?.cover_image,
     product?.cover_image,
@@ -62,26 +64,29 @@ const ProductDetailsPage = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch("/products.json");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const products: Product[] = await response.json();
-        const foundProduct = products.find((p) => p.id === id);
-        if (foundProduct) {
-          setProduct(foundProduct);
+        // ২. রিয়েল API কল (/books/:id)
+        const { data } = await axiosInstance.get(`/books/${id}`);
+        
+        if (data.success) {
+          // ব্যাকএন্ডের _id কে ফ্রন্টএন্ডের id তে ম্যাপ করা
+          setProduct({
+            ...data.data,
+            id: data.data._id,
+          });
         } else {
           setError("Product not found");
         }
       } catch (err) {
-        setError("Failed to fetch product data");
-        console.log(err);
+        setError("Failed to fetch product details");
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProduct();
+    if (id) {
+      fetchProduct();
+    }
   }, [id]);
 
   // Loading Skeleton
@@ -118,11 +123,13 @@ const ProductDetailsPage = () => {
     );
   }
 
-  if (error) {
+  if (error || !product) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-8">
         <div className="text-center">
-          <h2 className="text-2xl font-semibold text-red-600 mb-4">{error}</h2>
+          <h2 className="text-2xl font-semibold text-red-600 mb-4">
+            {error || "Product not found"}
+          </h2>
           <Button asChild>
             <NavLink to="/library" className="inline-flex items-center gap-2">
               <ArrowLeft className="h-4 w-4" />
@@ -132,10 +139,6 @@ const ProductDetailsPage = () => {
         </div>
       </div>
     );
-  }
-
-  if (!product) {
-    return null;
   }
 
   return (
@@ -174,7 +177,7 @@ const ProductDetailsPage = () => {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-6">
-                {product.tags.map((tag, index) => (
+                {product.tags?.map((tag, index) => (
                   <Badge
                     key={index}
                     variant="outline"
@@ -199,7 +202,7 @@ const ProductDetailsPage = () => {
                 <div>
                   <div className="text-sm text-gray-500">Pages</div>
                   <div className="text-lg font-semibold text-gray-900">
-                    {product.stats.pages}
+                    {product.stats?.pages || 0}
                   </div>
                 </div>
               </div>
@@ -210,7 +213,7 @@ const ProductDetailsPage = () => {
                 <div>
                   <div className="text-sm text-gray-500">Words</div>
                   <div className="text-lg font-semibold text-gray-900">
-                    {product.stats.words}
+                    {product.stats?.words || "N/A"}
                   </div>
                 </div>
               </div>
@@ -221,7 +224,7 @@ const ProductDetailsPage = () => {
                 <div>
                   <div className="text-sm text-gray-500">Size</div>
                   <div className="text-lg font-semibold text-gray-900">
-                    {product.stats.size}
+                    {product.stats?.size || "N/A"}
                   </div>
                 </div>
               </div>
@@ -304,7 +307,7 @@ const ProductDetailsPage = () => {
                 What's Inside:
               </h3>
               <ul className="space-y-3">
-                {product.whats_inside.map((item, index) => (
+                {product.whats_inside?.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <Check className="h-5 w-5 text-red-500 mt-1 flex-shrink-0" />
                     <span className="text-gray-700">{item}</span>
@@ -319,7 +322,7 @@ const ProductDetailsPage = () => {
                 Content Preview
               </h3>
               <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
-                {Array.from({ length: 10 }, (_, index) => (
+                {Array.from({ length: 5 }, (_, index) => (
                   <div
                     key={index}
                     className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden border border-gray-200 hover:border-red-400 transition-colors cursor-pointer group relative"
@@ -343,8 +346,6 @@ const ProductDetailsPage = () => {
           {/* Right Column: Actions and Details */}
           <div className="lg:col-span-4">
             <div className="sticky top-28 space-y-6">
-              {" "}
-              {/* Added top-28 for sticky navbar */}
               {/* Action Card */}
               <div className="bg-white border border-gray-200 rounded-2xl shadow-lg">
                 <div className="p-6 space-y-4">
@@ -388,7 +389,7 @@ const ProductDetailsPage = () => {
                     Usage Rights
                   </h3>
                   <ul className="space-y-3 text-sm">
-                    {product.usage_rights.map((item, index) => (
+                    {product.usage_rights?.map((item, index) => (
                       <li key={index} className="flex items-center gap-3">
                         <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
                         <span className="text-gray-700">{item}</span>
@@ -407,19 +408,19 @@ const ProductDetailsPage = () => {
                     <div className="flex justify-between">
                       <span className="text-gray-500">File type</span>
                       <span className="font-semibold text-gray-700">
-                        {product.file_details.type}
+                        {product.file_details?.type || "ZIP"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">File size</span>
                       <span className="font-semibold text-gray-700">
-                        {product.file_details.size}
+                        {product.file_details?.size || "N/A"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">Date added</span>
                       <span className="font-semibold text-gray-700">
-                        {product.file_details.date_added}
+                        {product.file_details?.date_added || "Recently"}
                       </span>
                     </div>
                   </div>
@@ -430,9 +431,11 @@ const ProductDetailsPage = () => {
         </div>
       </div>
 
-      {/* Related Products Section (Moved to be inside the main container) */}
+      {/* Related Products Section */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Separator className="my-12" />
+        {/* ৩. রিলেটেড প্রোডাক্টের জন্য ক্যাটাগরি ও আইডি পাস করা হলো */}
+        {/* (তবে RelatedProducts কম্পোনেন্টটি এখনো আপডেট করতে হবে) */}
         <RelatedProducts />
       </div>
     </div>
