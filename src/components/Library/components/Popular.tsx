@@ -1,55 +1,29 @@
-import React, { useEffect, useState } from "react";
-// Imports for Link, Mail, Book, etc., are no longer needed here as they are in ProductCard
-import ProductCard, { type Product } from "./ProductCard"; // Import the new card and type
-import { Skeleton } from "../../ui/skeleton"; // Import Skeleton for loading
-
-// Define the type for our product (now imported from ProductCard)
-// interface Product { ... } // No longer needed
-
-// Icon mapping object (no longer needed)
-// const iconMap: { ... } // No longer needed
+import { useEffect, useState } from "react";
+import ProductCard, { type Product } from "./ProductCard";
+import { Skeleton } from "../../ui/skeleton";
+import { axiosInstance } from "../../../lib/axios"; // ১. Axios ইম্পোর্ট
 
 const Popular = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // --- MOCK DATA FOR FILTERS (to populate card) ---
-  const allCategories = [
-    "Ebook",
-    "Email Template",
-    "Marketing",
-    "Design",
-    "Productivity",
-  ];
-  const allTags = [
-    "digital marketing",
-    "content marketing",
-    "personal development",
-    "lead generation",
-    "startups",
-    "productivity",
-    "mindset",
-  ];
-
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await fetch("/books.json");
-        let data: Product[] = await response.json();
+        // limit can be set: /books?limit=20
+        const { data } = await axiosInstance.get("/books");
 
-        // Add mock data for filtering/display
-        data = data.map((item, index) => ({
-          ...item,
-          category: allCategories[index % allCategories.length],
-          tags: [
-            allTags[index % allTags.length],
-            allTags[(index + 1) % allTags.length],
-          ],
-          subtitle: item.title.split(" ").slice(0, 10).join(" ") + "...", // Add mock subtitle
-        }));
+        if (data.success) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const mappedProducts = data.data.map((book: any) => ({
+            ...book,
+            id: book._id,
+            icon: book.icon || "book",
+          }));
 
-        setProducts(data); // Using all products as "popular"
+          setProducts(mappedProducts);
+        }
       } catch (error) {
         console.error("Failed to fetch popular products:", error);
       } finally {
@@ -61,8 +35,8 @@ const Popular = () => {
 
   // Placeholder function for the save button
   const handleSave = (id: string) => {
-    console.log("Save product clicked:", id);
-    // In a real app, you'd add this to a "saved" list in your context or API
+    alert(`Save product clicked: ${id}`);
+    // (save API)
   };
 
   // --- LOADING SKELETON ---
@@ -94,15 +68,28 @@ const Popular = () => {
       {loading ? (
         <LoadingSkeleton />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onSave={handleSave}
-            />
-          ))}
-        </div>
+        <>
+          {products.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onSave={handleSave}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20">
+              <h3 className="text-2xl font-semibold text-black">
+                No Popular Products Found
+              </h3>
+              <p className="text-gray-500 mt-2">
+                Check back later for new additions.
+              </p>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
