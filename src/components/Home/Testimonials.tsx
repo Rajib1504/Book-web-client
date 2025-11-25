@@ -3,7 +3,16 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
-import { Quote, Star, ArrowLeft, ArrowRight, Sparkles, Award, TrendingUp, Users } from "lucide-react";
+import {
+  Quote,
+  Star,
+  ArrowLeft,
+  ArrowRight,
+  Sparkles,
+  Award,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 
 // Swiper styles import
 import "swiper/css";
@@ -158,20 +167,26 @@ const Testimonials = () => {
   };
 
   return (
-    <section ref={sectionRef} className="relative py-32 bg-gradient-to-b from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="relative py-32 bg-gradient-to-b from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white overflow-hidden"
+    >
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Gradient Orbs */}
         <div className="absolute top-32 left-20 w-80 h-80 bg-red-500/8 rounded-full blur-3xl floating-element"></div>
         <div className="absolute bottom-32 right-20 w-96 h-96 bg-red-600/6 rounded-full blur-3xl floating-element"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl floating-element"></div>
-        
+
         {/* Grid Pattern */}
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-            backgroundSize: '50px 50px'
-          }}></div>
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
+              backgroundSize: "50px 50px",
+            }}
+          ></div>
         </div>
       </div>
 
@@ -182,14 +197,15 @@ const Testimonials = () => {
             <Quote className="h-5 w-5 text-red-500 mr-2" />
             <span className="text-red-400 font-medium">Testimonials</span>
           </div>
-          
+
           <h2 className="animate-header text-4xl md:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-white via-gray-100 to-red-400 bg-clip-text text-transparent mb-8 leading-tight">
             Loved by Entrepreneurs Worldwide
           </h2>
-          
+
           <p className="animate-header max-w-3xl mx-auto text-xl text-gray-300 leading-relaxed">
-            Don't just take our word for it. Here's what our members are saying about their 
-            experience with our platform and how it's transformed their businesses.
+            Don't just take our word for it. Here's what our members are saying
+            about their experience with our platform and how it's transformed
+            their businesses.
           </p>
         </div>
 
@@ -201,7 +217,9 @@ const Testimonials = () => {
                 <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-600/20 to-red-700/20 border border-red-500/30 rounded-2xl mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                   <stat.icon className="h-8 w-8 text-red-500" />
                 </div>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stat.number}</div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                  {stat.number}
+                </div>
                 <div className="text-gray-400 text-sm">{stat.label}</div>
               </div>
             ))}
@@ -218,11 +236,11 @@ const Testimonials = () => {
             >
               <ArrowLeft className="h-5 w-5 text-red-500 group-hover:text-red-400" />
             </button>
-            
+
             <div className="text-center">
               <div className="text-sm text-gray-400">Swipe or use arrows</div>
             </div>
-            
+
             <button
               onClick={() => swiper?.slideNext()}
               className="group p-3 bg-gradient-to-r from-red-600/20 to-red-700/20 border border-red-500/30 rounded-full hover:from-red-600/30 hover:to-red-700/30 transition-all duration-300 hover:scale-110"
@@ -241,14 +259,14 @@ const Testimonials = () => {
             }}
             pagination={{
               clickable: true,
-              el: '.swiper-pagination',
-              type: 'bullets',
+              el: ".swiper-pagination",
+              type: "bullets",
             }}
             navigation={false}
             modules={[Autoplay, Pagination, EffectFade]}
             effect="fade"
             fadeEffect={{
-              crossFade: true
+              crossFade: true,
             }}
             className="testimonials-swiper"
             loop={true}
@@ -261,7 +279,9 @@ const Testimonials = () => {
                   <div className="absolute top-0 right-0 z-10">
                     <div className="flex items-center px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 rounded-full shadow-lg">
                       <Sparkles className="h-4 w-4 text-white mr-2" />
-                      <span className="text-white text-sm font-medium">{testimonial.achievement}</span>
+                      <span className="text-white text-sm font-medium">
+                        {testimonial.achievement}
+                      </span>
                     </div>
                   </div>
 
@@ -287,7 +307,9 @@ const Testimonials = () => {
                       <div className="flex items-center mr-4">
                         {renderStars(testimonial.rating)}
                       </div>
-                      <span className="text-gray-400 text-sm">Verified Customer</span>
+                      <span className="text-gray-400 text-sm">
+                        Verified Customer
+                      </span>
                     </div>
 
                     {/* Author Info */}
@@ -308,8 +330,12 @@ const Testimonials = () => {
                         <h4 className="text-xl font-bold text-white mb-1">
                           {testimonial.name}
                         </h4>
-                        <p className="text-red-400 font-medium mb-1">{testimonial.title}</p>
-                        <p className="text-gray-400 text-sm">{testimonial.company}</p>
+                        <p className="text-red-400 font-medium mb-1">
+                          {testimonial.title}
+                        </p>
+                        <p className="text-gray-400 text-sm">
+                          {testimonial.company}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -344,7 +370,7 @@ const Testimonials = () => {
       </div>
 
       {/* Custom Swiper Styles */}
-      <style jsx>{`
+      <style>{`
         .testimonials-swiper .swiper-pagination-bullet {
           background: rgba(239, 68, 68, 0.3);
           opacity: 1;

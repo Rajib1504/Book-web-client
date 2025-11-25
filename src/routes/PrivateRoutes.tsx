@@ -7,9 +7,9 @@ const PrivateRoutes = () => {
   const { isAuthenticated, isLoading, user } = useAuth();
   const location = useLocation();
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner className="text-white h-10 w-10" />;
   }
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !user) {
     return <Navigate to={"/login"} state={{ from: location }} replace />;
   }
   if (user?.plan !== "pro") {

@@ -30,7 +30,7 @@ const navLinks = [
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useAuth();
-  const data = user?.data;
+  const data = user;
   // console.log(data);
   const location = useLocation();
 

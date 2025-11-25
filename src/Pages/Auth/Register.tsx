@@ -140,7 +140,7 @@ const Register = () => {
         yoyo: true,
         repeat: 1,
         onComplete: () => {
-          login(data.token, data);
+          login(data.token, data.data);
           navigate("/", { replace: true });
         }
       });

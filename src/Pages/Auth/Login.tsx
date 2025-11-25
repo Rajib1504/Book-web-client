@@ -29,7 +29,7 @@ const Login = () => {
   const [isFocused, setIsFocused] = useState("");
 
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, user } = useAuth();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -38,9 +38,13 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/", { replace: true });
+      if (user?.plan === "pro") {
+        navigate("/library", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   useEffect(() => {
     if (
@@ -110,7 +114,7 @@ const Login = () => {
         email,
         password,
       });
-
+      // console.log(data.data.plan);
       // Success animation
       gsap.to(formRef.current, {
         scale: 1.02,
@@ -119,7 +123,7 @@ const Login = () => {
         yoyo: true,
         repeat: 1,
         onComplete: () => {
-          login(data.token, data);
+          login(data.token, data.data);
           navigate("/", { replace: true });
         },
       });

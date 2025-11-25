@@ -36,6 +36,7 @@ const PricingPlans = () => {
   // console.log(user?.data?._id);
   const [loading, setloading] = useState(false);
   const navigate = useNavigate();
+  const isPro = user?.plan === "pro";
   useEffect(() => {
     const section = sectionRef.current;
     if (section) {
@@ -88,7 +89,8 @@ const PricingPlans = () => {
       if (responce.status === 200) {
         const updatedUserData = {
           ...user,
-          ...responce.data.data, // এতে plan: 'pro' এবং license থাকবে
+          ...responce.data.data,
+          plan: "pro",
         };
         updateUser(updatedUserData);
         setTimeout(() => {
@@ -151,12 +153,12 @@ const PricingPlans = () => {
 
                 <Button
                   onClick={handlePurchse}
-                  disabled={loading || user?.plan === "pro"}
+                  disabled={loading || isPro}
                   className="w-full cursor-pointer bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-7 text-xl font-bold rounded-xl shadow-lg shadow-red-600/20 transform hover:scale-[1.02] transition-all duration-300"
                 >
                   {loading ? (
                     <Spinner />
-                  ) : user?.plan === "pro" ? (
+                  ) : isPro? (
                     "You are already a Member"
                   ) : (
                     <>

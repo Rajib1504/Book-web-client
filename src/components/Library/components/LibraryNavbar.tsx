@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import { Button } from "../../ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
+import { Avatar, AvatarFallback } from "../../ui/avatar";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthProvider";
 
@@ -71,7 +71,7 @@ const LibraryNavbar: React.FC<LibraryNavbarProps> = ({
                   src={user?.data.name.charAt(0).toLocaleUpperCase()}
                   alt={user?.data?.name || "user"}
                 /> */}
-                <AvatarFallback className="bg-red-100 text-red-600">{user?.data?.name?.charAt(0)?.toUpperCase()}</AvatarFallback>
+                <AvatarFallback className="bg-red-100 text-red-600">{user?.name?.charAt(0)?.toUpperCase()}</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
@@ -79,10 +79,10 @@ const LibraryNavbar: React.FC<LibraryNavbarProps> = ({
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">
-                  {user?.data?.name || "User Name"}
+                  {user?.name || "User Name"}
                 </p>
                 <p className="text-xs leading-none text-gray-500">
-                  {user?.data?.email || "user@example.com"}
+                  {user?.email || "user@example.com"}
                 </p>
               </div>
             </DropdownMenuLabel>
@@ -90,9 +90,9 @@ const LibraryNavbar: React.FC<LibraryNavbarProps> = ({
             <DropdownMenuItem asChild>
               <Link to="/library/account">My Account</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Support</DropdownMenuItem>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem>Support</DropdownMenuItem> */}
+            {/* <DropdownMenuSeparator /> */}
             {/* Logout is handled in the sidebar, as requested */}
           </DropdownMenuContent>
         </DropdownMenu>

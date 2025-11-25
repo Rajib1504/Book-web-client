@@ -31,7 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onSave }) => {
   const IconComponent = iconMap[product.icon] || iconMap.default;
 
   return (
-    <Link to="/library/product/1" className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 group flex flex-col">
+    <div className="bg-white border h-full border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 group flex flex-col">
       {/* Image Section */}
       <div className="relative h-64 w-full overflow-hidden bg-black p-4">
         {/* Header Icons */}
@@ -108,7 +108,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onSave }) => {
           </Button>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

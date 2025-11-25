@@ -136,7 +136,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     >
       <div className="flex-grow flex flex-col overflow-auto">
         {/* Header */}
-        <div
+        <Link
+          to={"/"}
           className={cn(
             "flex items-center gap-3 px-4 py-[17px] border-b border-gray-300 flex-shrink-0",
             isCollapsed && "justify-center"
@@ -154,7 +155,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             E-Book
           </h1>
           {/* Desktop Toggle Button Removed */}
-        </div>
+        </Link>
 
         {/* Navigation Sections */}
         <div className="flex-grow overflow-y-auto py-4 sidebar-scroll">
