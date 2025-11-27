@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import ProductCard, { type Product } from "./ProductCard";
 import { Skeleton } from "../../ui/skeleton";
-import { axiosInstance } from "../../../lib/axios"; // ১. Axios ইম্পোর্ট
+import { axiosInstance } from "../../../lib/axios";
+import toast from "react-hot-toast";
 
 const Popular = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -11,7 +12,6 @@ const Popular = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        // limit can be set: /books?limit=20
         const { data } = await axiosInstance.get("/books");
 
         if (data.success) {
@@ -33,13 +33,19 @@ const Popular = () => {
     fetchProducts();
   }, []);
 
-  // Placeholder function for the save button
-  const handleSave = (id: string) => {
-    alert(`Save product clicked: ${id}`);
-    // (save API)
+  // --- SAVE API CONNECTION ---
+  const handleSave = async (id: string) => {
+    try {
+      const { data } = await axiosInstance.post("/users/save-book", { bookId: id });
+      if (data.success) {
+        toast.success(data.message);
+      }
+    } catch (error) {
+      console.error("Save failed:", error);
+      toast.error("Failed to save book");
+    }
   };
 
-  // --- LOADING SKELETON ---
   const LoadingSkeleton = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {Array.from({ length: 8 }).map((_, i) => (
@@ -56,7 +62,6 @@ const Popular = () => {
 
   return (
     <div className="p-4 md:p-8 h-full overflow-y-auto">
-      {/* Title and Subtitle */}
       <div className="mb-10">
         <h1 className="text-4xl font-bold text-black">Popular Products</h1>
         <p className="text-lg text-gray-600 mt-2">
@@ -64,7 +69,6 @@ const Popular = () => {
         </p>
       </div>
 
-      {/* Products Grid */}
       {loading ? (
         <LoadingSkeleton />
       ) : (

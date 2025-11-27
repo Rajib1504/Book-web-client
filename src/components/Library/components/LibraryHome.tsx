@@ -12,11 +12,11 @@ import { Button } from "../../ui/button";
 import { Badge } from "../../ui/badge";
 import ProductCard, { type Product } from "./ProductCard";
 import { Skeleton } from "../../ui/skeleton";
-import { axiosInstance } from "../../../lib/axios"; // ১. Axios ইম্পোর্ট
+import { axiosInstance } from "../../../lib/axios";
+import toast from "react-hot-toast"; // টোস্ট ইম্পোর্ট
 
 const LibraryHome = () => {
   // --- MOCK DATA FOR FILTERS ---
-  // (ভবিষ্যতে এগুলোও API থেকে আনা যেতে পারে)
   const allCategories = [
     "Ebook",
     "Email Template",
@@ -47,22 +47,18 @@ const LibraryHome = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      // ২. কুইরি প্যারামিটার তৈরি
       const params: Record<string, string> = {};
       
       if (searchTerm) params.search = searchTerm;
       if (selectedCategory) params.category = selectedCategory;
       if (selectedTag) params.tags = selectedTag;
 
-      // ৩. API কল
       const { data } = await axiosInstance.get("/books", { params });
       
-      // ৪. ডাটা ম্যাপিং (Database _id -> Frontend id)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mappedProducts = data.data.map((book: any) => ({
         ...book,
-        id: book._id, // _id কে id তে কনভার্ট করা হলো
-        // যদি আইকন ডাটাবেসে না থাকে তবে ডিফল্ট সেট করা
+        id: book._id,
         icon: book.icon || "book", 
       }));
 
@@ -74,17 +70,28 @@ const LibraryHome = () => {
     }
   };
 
-  // --- EFFECT FOR FETCHING & FILTERING ---
   useEffect(() => {
-    // ৫. Debounce লজিক (সার্চের সময় লোড কমানোর জন্য)
     const timeoutId = setTimeout(() => {
       fetchProducts();
-    }, 500); // ৫০০ মিলিসেকেন্ড অপেক্ষা করবে টাইপ শেষ হওয়ার পর
+    }, 500);
 
     return () => clearTimeout(timeoutId);
-    
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, selectedCategory, selectedTag]); // এই ভ্যালুগুলো পাল্টালে আবার ফেচ হবে
+  }, [searchTerm, selectedCategory, selectedTag]);
+
+  // --- SAVE API CONNECTION ---
+  const handleSave = async (id: string) => {
+    try {
+      const { data } = await axiosInstance.post("/users/save-book", { bookId: id });
+      if (data.success) {
+        // মেসেজ অনুযায়ী টোস্ট দেখানো
+        toast.success(data.message);
+      }
+    } catch (error) {
+      console.error("Save failed:", error);
+      toast.error("Failed to save book");
+    }
+  };
 
   // --- HANDLERS ---
   const clearFilters = () => {
@@ -132,7 +139,6 @@ const LibraryHome = () => {
 
         {/* Filter Dropdowns */}
         <div className="flex flex-col sm:flex-row gap-3">
-          {/* Category Filter */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -155,7 +161,6 @@ const LibraryHome = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Tag Filter */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -179,7 +184,7 @@ const LibraryHome = () => {
           </DropdownMenu>
         </div>
 
-        {/* Active Filters Display */}
+        {/* Active Filters */}
         {hasActiveFilters && (
           <div className="flex flex-wrap items-center gap-2 mt-4">
             <h4 className="text-sm font-medium text-gray-600">
@@ -233,7 +238,7 @@ const LibraryHome = () => {
             {products.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard key={product.id} product={product} onSave={handleSave} />
                 ))}
               </div>
             ) : (

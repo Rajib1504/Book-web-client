@@ -18,6 +18,7 @@ import { Badge } from "../../components/ui/badge";
 import { Separator } from "../../components/ui/separator";
 import { Skeleton } from "../../components/ui/skeleton";
 import { axiosInstance } from "../../lib/axios"; // ১. Axios ইম্পোর্ট
+import toast from "react-hot-toast";
 
 // Define the type for our product data
 interface Product {
@@ -88,6 +89,22 @@ const ProductDetailsPage = () => {
       fetchProduct();
     }
   }, [id]);
+
+  const handleSaveProduct = async () => {
+    if (!product) return;
+    try {
+      const { data } = await axiosInstance.post("/users/save-book", {
+        bookId: product.id,
+      });
+      console.log(data);
+      if (data.success) {
+        toast.success(data.message);
+      }
+    } catch (error) {
+      console.error("Save failed:", error);
+      toast.error("Failed to save product");
+    }
+  };
 
   // Loading Skeleton
   if (loading) {
@@ -359,7 +376,8 @@ const ProductDetailsPage = () => {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="w-full text-base"
+                    className="w-full text-base cursor-pointer"
+                    onClick={handleSaveProduct}
                   >
                     <Bookmark className="h-5 w-5 mr-2" />
                     Save Product

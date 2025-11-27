@@ -1,70 +1,61 @@
 import React, { useEffect, useState } from "react";
-// Removed old imports like Link, Mail, Book, etc.
-import ProductCard, { type Product } from "./ProductCard"; // Import the new card and type
-import { Skeleton } from "../../ui/skeleton"; // Import Skeleton for loading
-
-// --- MOCK DATA FOR FILTERS (to populate card) ---
-// These are needed for the ProductCard to display all its info
-const allCategories = [
-  "Ebook",
-  "Email Template",
-  "Marketing",
-  "Design",
-  "Productivity",
-];
-const allTags = [
-  "digital marketing",
-  "content marketing",
-  "personal development",
-  "lead generation",
-  "startups",
-  "productivity",
-  "mindset",
-];
+import ProductCard, { type Product } from "./ProductCard";
+import { Skeleton } from "../../ui/skeleton";
+import { axiosInstance } from "../../../lib/axios";
+import toast from "react-hot-toast";
 
 const Saved = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchSavedProducts = async () => {
       setLoading(true);
       try {
-        const response = await fetch("/books.json");
-        let data: Product[] = await response.json();
+        // আসল Saved Books API কল
+        const { data } = await axiosInstance.get("/users/saved-books");
 
-        // Add mock data for display
-        // In a real app, this data would come with the "saved" product object
-        data = data.map((item, index) => ({
-          ...item,
-          icon: ["book", "mail", "book"][index % 3], // Add a mock icon
-          category: allCategories[index % allCategories.length],
-          tags: [
-            allTags[index % allTags.length],
-            allTags[(index + 1) % allTags.length],
-          ],
-          subtitle: item.title.split(" ").slice(0, 10).join(" ") + "...", // Add mock subtitle
-        }));
-
-        setProducts(data); // Using all products as "saved" for this example
+        if (data.success) {
+          // ডাটা ম্যাপিং
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const mappedProducts = data.data.map((id: any) => ({
+            ...id, // কারণ populate করা হয়েছে, তাই পুরো অবজেক্ট আসবে
+            id: id._id,
+            icon: id.icon || "book",
+          }));
+          setProducts(mappedProducts);
+        }
       } catch (error) {
         console.error("Failed to fetch saved products:", error);
+        toast.error("Failed to load saved items");
       } finally {
         setLoading(false);
       }
     };
-    fetchProducts();
+    fetchSavedProducts();
   }, []);
 
-  // Placeholder function for the save button
-  // On this page, it would likely be an "unsave" action
-  const handleSave = (id: string) => {
-    console.log("Save/Unsave product clicked:", id);
-    // In a real app, you'd remove this from the "saved" list
-    // For now, we'll just show the full list
+  // --- REMOVE/UNSAVE API CONNECTION ---
+  const handleSave = async (id: string) => {
+    // অপটিমিস্টিক আপডেট: আগেই লিস্ট থেকে সরিয়ে দিচ্ছি
+    const previousProducts = [...products];
+    setProducts(products.filter(p => p.id !== id));
+
+    try {
+      const { data } = await axiosInstance.post("/users/save-book", { bookId: id });
+      if (data.success) {
+        toast.success("Removed from saved list");
+      } else {
+        // ফেইল হলে আবার আগের অবস্থায়
+        setProducts(previousProducts);
+      }
+    } catch (error) {
+      console.error("Unsave failed:", error);
+      setProducts(previousProducts);
+      toast.error("Failed to update");
+    }
   };
 
-  // --- LOADING SKELETON ---
   const LoadingSkeleton = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {Array.from({ length: 8 }).map((_, i) => (
@@ -81,7 +72,6 @@ const Saved = () => {
 
   return (
     <div className="p-4 md:p-8 h-full overflow-y-auto">
-      {/* Title and Subtitle */}
       <div className="mb-10">
         <h1 className="text-4xl font-bold text-black">Saved Products</h1>
         <p className="text-lg text-gray-600 mt-2">
@@ -89,7 +79,6 @@ const Saved = () => {
         </p>
       </div>
 
-      {/* Products Grid */}
       {loading ? (
         <LoadingSkeleton />
       ) : products.length > 0 ? (

@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from "../../components/ui/sheet";
 import { Button } from "../../components/ui/button";
 import { useState } from "react";
 import LibraryNavbar from "../../components/Library/components/LibraryNavbar";
+import { Toaster } from "react-hot-toast";
 
 const Layout = () => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -16,6 +17,7 @@ const Layout = () => {
 
   return (
     <div className="grid grid-cols-12 bg-white min-h-screen">
+      <Toaster position="top-center" reverseOrder={false} />
       {/* Desktop Sidebar */}
       <div
         className={`hidden lg:block sticky top-0 h-screen transition-all duration-300 ${
