@@ -17,6 +17,7 @@ import Account from "../components/Library/components/Account";
 import DigitalProducts from "../components/Library/components/DigitalProducts";
 import ProductMockups from "../components/Library/components/ProductMockups";
 import PrivateRoutes from "./PrivateRoutes";
+import Service from "../Pages/Service/Service";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <AboutPage />,
+      },
+      {
+        path: "/services",
+        element: <Service />,
       },
     ],
   },

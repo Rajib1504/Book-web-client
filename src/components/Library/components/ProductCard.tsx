@@ -42,10 +42,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onSave }) => {
           <Button
             variant="ghost"
             size="icon"
-            className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/40 z-10"
+            className="w-10 h-10 bg-white/20 cursor-pointer backdrop-blur-sm rounded-full text-white hover:bg-white/40 z-10"
             onClick={() => onSave?.(product.id)}
           >
-            <Bookmark className="h-5 w-5" />
+            <Bookmark className="h-5 w-5 " />
           </Button>
         </div>
 
