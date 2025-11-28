@@ -18,6 +18,7 @@ import DigitalProducts from "../components/Library/components/DigitalProducts";
 import ProductMockups from "../components/Library/components/ProductMockups";
 import PrivateRoutes from "./PrivateRoutes";
 import Service from "../Pages/Service/Service";
+import Resources from "../Pages/Resources/Resources";
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
       {
         path: "/services",
         element: <Service />,
+      },
+      {
+        path: "/resources",
+        element: <Resources />,
       },
     ],
   },
