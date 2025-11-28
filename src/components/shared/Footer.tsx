@@ -1,4 +1,4 @@
-import { Twitter, Linkedin, Globe } from "lucide-react";
+import { Twitter, Linkedin, Facebook } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
 const Footer = () => {
@@ -14,22 +14,25 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4 mt-6">
               <a
-                href="#"
+                href="https://x.com/"
+                target="_blank"
                 className="text-gray-400 hover:text-white transition-colors"
               >
                 <Twitter />
               </a>
               <a
-                href="#"
+                href="http://linkedin.com/"
+                target="_blank"
                 className="text-gray-400 hover:text-white transition-colors"
               >
                 <Linkedin />
               </a>
               <a
-                href="#"
+                href="https://www.facebook.com/"
+                target="_blank"
                 className="text-gray-400 hover:text-white transition-colors"
               >
-                <Globe />
+                <Facebook />
               </a>
             </div>
           </div>
@@ -77,17 +80,17 @@ const Footer = () => {
             <h3 className="font-semibold tracking-wider uppercase">Legal</h3>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link to={'/'} className="text-gray-400 hover:text-white">
+                <Link to={"/"} className="text-gray-400 hover:text-white">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link to={'/'} className="text-gray-400 hover:text-white">
+                <Link to={"/"} className="text-gray-400 hover:text-white">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to={'/'} className="text-gray-400 hover:text-white">
+                <Link to={"/"} className="text-gray-400 hover:text-white">
                   Cookie Policy
                 </Link>
               </li>
