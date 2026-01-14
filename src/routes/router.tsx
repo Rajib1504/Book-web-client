@@ -3,6 +3,7 @@ import Main from "../Layout/Main";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
+import VerifyOTP from "../Pages/Auth/VerifyOTP";
 import Product from "../Pages/Product";
 import PricingPage from "../Pages/Pricing/PricingPage";
 import AboutPage from "../Pages/About/AboutPage";
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
         element: <Register />,
       },
       {
+        path: "/verify-otp",
+        element: <VerifyOTP />,
+      },
+      {
         path: "/products",
         element: <Product />,
       },
@@ -60,7 +65,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    element: <PrivateRoutes />,
+    // element: <PrivateRoutes />,
     children: [
       {
         path: "/library",

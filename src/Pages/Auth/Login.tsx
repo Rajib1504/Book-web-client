@@ -123,7 +123,7 @@ const Login = () => {
         yoyo: true,
         repeat: 1,
         onComplete: () => {
-          login(data.token, data.data);
+          login(data.data.jwtToken, data.data);
           navigate("/", { replace: true });
         },
       });

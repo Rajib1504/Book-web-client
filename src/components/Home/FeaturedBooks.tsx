@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import axios from "axios";
+import { axiosInstance } from "../../lib/axios";
 import type { Book, PaginatedBooksResponse } from "../../types";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter } from "../ui/card";
@@ -17,10 +17,10 @@ const FeaturedBooks = () => {
   useEffect(() => {
     const fetchFeaturedBooks = async () => {
       try {
-        const { data } = await axios.get<PaginatedBooksResponse>(
-          "http://localhost:5000/api/books?limit=4&sortBy=-createdAt"
+        const { data } = await axiosInstance.get<PaginatedBooksResponse>(
+          "/books?limit=4&sortBy=-createdAt"
         );
-        setBooks(data.books);
+        setBooks(data.data.items || []); // Corrected mapping to data.data.items
       } catch (error) {
         console.error("Failed to fetch books:", error);
       } finally {

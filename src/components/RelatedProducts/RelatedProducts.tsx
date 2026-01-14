@@ -29,14 +29,16 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
     const fetchRelatedProducts = async () => {
       try {
         const { data } = await axiosInstance.get(
-          `/books/related/${category}/${currentBookId}`
+          `/books?category=${category}&type=related_books&limit=4`
         );
-        if (!data.ok) {
-          throw new Error("Network response was not ok");
-        }
 
-        // Take first 4 products as related products
-        setRelatedProducts(data.slice(0, 4));
+        // Backend returns { status: true, data: { items: [...] } }
+        const books = data.data.items || [];
+
+        // Filter out the current book if it's in the list
+        setRelatedProducts(
+          books.filter((b: any) => b._id !== currentBookId).slice(0, 4)
+        );
       } catch (error) {
         console.error("Failed to fetch related products:", error);
       } finally {

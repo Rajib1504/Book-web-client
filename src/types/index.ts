@@ -6,7 +6,12 @@ export interface Book {
 }
 
 export interface PaginatedBooksResponse {
-  books: Book[];
-  totalPages: number;
-  currentPage: number;
+  status: boolean;
+  message: string;
+  data: {
+    items: Book[];
+    total: number;
+    perPage: number;
+    currentPage: number;
+  };
 }

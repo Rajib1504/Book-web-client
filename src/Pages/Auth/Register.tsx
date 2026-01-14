@@ -6,37 +6,38 @@ import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { gsap } from "gsap";
-import { 
-  BookOpen, 
-  Eye, 
-  EyeOff, 
-  Mail, 
-  Lock, 
+import {
+  BookOpen,
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
   User,
-  // Sparkles, 
-  Shield, 
+  // Sparkles,
+  Shield,
   Zap,
   ArrowRight,
   CheckCircle,
   AlertCircle,
   Star,
   Globe,
-  Users
+  Users,
 } from "lucide-react";
 import { axiosInstance } from "../../lib/axios";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFocused, setIsFocused] = useState("");
-  
+
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -49,17 +50,25 @@ const Register = () => {
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
-    if (containerRef.current && formRef.current && headerRef.current && featuresRef.current) {
+    if (
+      containerRef.current &&
+      formRef.current &&
+      headerRef.current &&
+      featuresRef.current
+    ) {
       // Initial animations
-      gsap.set([formRef.current, headerRef.current, featuresRef.current], { opacity: 0, y: 50 });
-      
+      gsap.set([formRef.current, headerRef.current, featuresRef.current], {
+        opacity: 0,
+        y: 50,
+      });
+
       // Header entrance animation
       gsap.to(headerRef.current, {
         opacity: 1,
         y: 0,
         duration: 1.2,
         ease: "power3.out",
-        delay: 0.3
+        delay: 0.3,
       });
 
       // Features entrance animation
@@ -68,7 +77,7 @@ const Register = () => {
         y: 0,
         duration: 1.2,
         ease: "power3.out",
-        delay: 0.5
+        delay: 0.5,
       });
 
       // Form entrance animation
@@ -77,7 +86,7 @@ const Register = () => {
         y: 0,
         duration: 1.2,
         ease: "power3.out",
-        delay: 0.8
+        delay: 0.8,
       });
 
       // Floating particles animation
@@ -88,7 +97,7 @@ const Register = () => {
         ease: "power2.inOut",
         yoyo: true,
         repeat: -1,
-        stagger: 0.5
+        stagger: 0.5,
       });
 
       // Gradient orb animation
@@ -97,7 +106,7 @@ const Register = () => {
         duration: 8,
         ease: "power2.inOut",
         yoyo: true,
-        repeat: -1
+        repeat: -1,
       });
 
       // Security pattern animation
@@ -105,7 +114,7 @@ const Register = () => {
         rotation: 360,
         duration: 20,
         ease: "none",
-        repeat: -1
+        repeat: -1,
       });
 
       // Feature cards animation
@@ -115,7 +124,7 @@ const Register = () => {
         ease: "power2.inOut",
         yoyo: true,
         repeat: -1,
-        stagger: 0.8
+        stagger: 0.8,
       });
     }
   }, []);
@@ -124,14 +133,15 @@ const Register = () => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
-    
+
     try {
       const { data } = await axiosInstance.post("/auth/register", {
-        name,
+        fullName: name,
         email,
+        phone,
         password,
       });
-      
+
       // Success animation
       gsap.to(formRef.current, {
         scale: 1.02,
@@ -140,9 +150,9 @@ const Register = () => {
         yoyo: true,
         repeat: 1,
         onComplete: () => {
-          login(data.token, data.data);
-          navigate("/", { replace: true });
-        }
+          // Instead of immediate login, redirect to OTP verification
+          navigate("/verify-otp", { state: { email } });
+        },
       });
     } catch (err: any) {
       setError(
@@ -154,7 +164,7 @@ const Register = () => {
         duration: 0.1,
         ease: "power2.out",
         yoyo: true,
-        repeat: 5
+        repeat: 5,
       });
     } finally {
       setIsLoading(false);
@@ -166,7 +176,7 @@ const Register = () => {
     gsap.to(`#${field}-container`, {
       scale: 1.02,
       duration: 0.3,
-      ease: "power2.out"
+      ease: "power2.out",
     });
   };
 
@@ -175,7 +185,7 @@ const Register = () => {
     gsap.to(`#${field}-container`, {
       scale: 1,
       duration: 0.3,
-      ease: "power2.out"
+      ease: "power2.out",
     });
   };
 
@@ -185,37 +195,43 @@ const Register = () => {
       icon: BookOpen,
       title: "Unlimited Access",
       description: "Browse millions of books and resources",
-      color: "from-blue-500 to-cyan-500"
+      color: "from-blue-500 to-cyan-500",
     },
     {
       icon: Users,
       title: "Join Community",
       description: "Connect with fellow book lovers worldwide",
-      color: "from-purple-500 to-pink-500"
+      color: "from-purple-500 to-pink-500",
     },
     {
       icon: Star,
       title: "Premium Features",
       description: "Access advanced reading tools and analytics",
-      color: "from-yellow-500 to-orange-500"
-    }
+      color: "from-yellow-500 to-orange-500",
+    },
   ];
 
   return (
-    <div ref={containerRef} className="relative min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white overflow-hidden">
+    <div
+      ref={containerRef}
+      className="relative min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white overflow-hidden"
+    >
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Gradient Orbs */}
         <div className="absolute top-20 left-20 w-96 h-96 bg-red-500/5 rounded-full blur-3xl floating-particle gradient-orb"></div>
         <div className="absolute bottom-20 right-20 w-80 h-80 bg-blue-500/4 rounded-full blur-3xl floating-particle"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-500/3 rounded-full blur-3xl floating-particle"></div>
-        
+
         {/* Grid Pattern */}
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-            backgroundSize: '60px 60px'
-          }}></div>
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
+              backgroundSize: "60px 60px",
+            }}
+          ></div>
         </div>
 
         {/* Security Patterns */}
@@ -246,18 +262,19 @@ const Register = () => {
             <div className="inline-flex items-center justify-center mb-8 w-24 h-24 bg-gradient-to-br from-red-500/20 to-red-600/20 border border-red-500/30 rounded-3xl">
               <BookOpen className="h-12 w-12 text-red-400" />
             </div>
-            
+
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-white via-gray-100 to-red-400 bg-clip-text text-transparent mb-6">
               Join the Revolution
             </h1>
-            
+
             <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-red-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-6">
               Create Your Digital Library
             </h2>
-            
+
             <p className="text-xl text-gray-300 leading-relaxed max-w-3xl mx-auto">
-              Embark on an extraordinary journey through the world of knowledge. 
-              Join thousands of readers who have already discovered the future of digital reading.
+              Embark on an extraordinary journey through the world of knowledge.
+              Join thousands of readers who have already discovered the future
+              of digital reading.
             </p>
           </div>
 
@@ -265,13 +282,20 @@ const Register = () => {
           <div ref={featuresRef} className="mb-16">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {benefits.map((benefit, index) => (
-                <div key={index} className="feature-card bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800/50 rounded-2xl p-8 shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 transition-all duration-300 group hover:-translate-y-2">
+                <div
+                  key={index}
+                  className="feature-card bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800/50 rounded-2xl p-8 shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 transition-all duration-300 group hover:-translate-y-2"
+                >
                   <div className="flex flex-col items-center text-center space-y-4">
                     <div className="w-16 h-16 bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 rounded-xl flex items-center justify-center group-hover:border-gray-600/50 transition-colors duration-300">
                       <benefit.icon className="h-8 w-8 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-white">{benefit.title}</h3>
-                    <p className="text-gray-300 leading-relaxed">{benefit.description}</p>
+                    <h3 className="text-xl font-bold text-white">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-gray-300 leading-relaxed">
+                      {benefit.description}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -279,24 +303,29 @@ const Register = () => {
           </div>
 
           {/* Enhanced Form */}
-          <div  className="relative max-w-md mx-auto">
+          <div className="relative max-w-md mx-auto">
             <form ref={formRef} onSubmit={handleRegister} className="space-y-8">
               {/* Name Field */}
               <div id="name-container" className="relative group">
-                <Label htmlFor="name" className="text-sm font-medium text-gray-300 mb-3 block">
+                <Label
+                  htmlFor="name"
+                  className="text-sm font-medium text-gray-300 mb-3 block"
+                >
                   Full Name
                 </Label>
                 <div className="relative">
-                  <User className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
-                    isFocused === 'name' ? 'text-red-400' : 'text-gray-500'
-                  }`} />
+                  <User
+                    className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
+                      isFocused === "name" ? "text-red-400" : "text-gray-500"
+                    }`}
+                  />
                   <Input
                     id="name"
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    onFocus={() => handleInputFocus('name')}
-                    onBlur={() => handleInputBlur('name')}
+                    onFocus={() => handleInputFocus("name")}
+                    onBlur={() => handleInputBlur("name")}
                     required
                     className="pl-12 pr-4 py-4 bg-gradient-to-r from-gray-900/50 to-gray-800/50 border-2 border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 transition-all duration-300"
                     placeholder="Enter your full name"
@@ -306,20 +335,25 @@ const Register = () => {
 
               {/* Email Field */}
               <div id="email-container" className="relative group">
-                <Label htmlFor="email" className="text-sm font-medium text-gray-300 mb-3 block">
+                <Label
+                  htmlFor="email"
+                  className="text-sm font-medium text-gray-300 mb-3 block"
+                >
                   Email Address
                 </Label>
                 <div className="relative">
-                  <Mail className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
-                    isFocused === 'email' ? 'text-red-400' : 'text-gray-500'
-                  }`} />
+                  <Mail
+                    className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
+                      isFocused === "email" ? "text-red-400" : "text-gray-500"
+                    }`}
+                  />
                   <Input
                     id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    onFocus={() => handleInputFocus('email')}
-                    onBlur={() => handleInputBlur('email')}
+                    onFocus={() => handleInputFocus("email")}
+                    onBlur={() => handleInputBlur("email")}
                     required
                     className="pl-12 pr-4 py-4 bg-gradient-to-r from-gray-900/50 to-gray-800/50 border-2 border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 transition-all duration-300"
                     placeholder="Enter your email"
@@ -327,22 +361,57 @@ const Register = () => {
                 </div>
               </div>
 
+              {/* Phone Field */}
+              <div id="phone-container" className="relative group">
+                <Label
+                  htmlFor="phone"
+                  className="text-sm font-medium text-gray-300 mb-3 block"
+                >
+                  Phone Number
+                </Label>
+                <div className="relative">
+                  <Zap
+                    className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
+                      isFocused === "phone" ? "text-red-400" : "text-gray-500"
+                    }`}
+                  />
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    onFocus={() => handleInputFocus("phone")}
+                    onBlur={() => handleInputBlur("phone")}
+                    required
+                    className="pl-12 pr-4 py-4 bg-gradient-to-r from-gray-900/50 to-gray-800/50 border-2 border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 transition-all duration-300"
+                    placeholder="Enter your phone number"
+                  />
+                </div>
+              </div>
+
               {/* Password Field */}
               <div id="password-container" className="relative group">
-                <Label htmlFor="password" className="text-sm font-medium text-gray-300 mb-3 block">
+                <Label
+                  htmlFor="password"
+                  className="text-sm font-medium text-gray-300 mb-3 block"
+                >
                   Password
                 </Label>
                 <div className="relative">
-                  <Lock className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
-                    isFocused === 'password' ? 'text-red-400' : 'text-gray-500'
-                  }`} />
+                  <Lock
+                    className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${
+                      isFocused === "password"
+                        ? "text-red-400"
+                        : "text-gray-500"
+                    }`}
+                  />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    onFocus={() => handleInputFocus('password')}
-                    onBlur={() => handleInputBlur('password')}
+                    onFocus={() => handleInputFocus("password")}
+                    onBlur={() => handleInputBlur("password")}
                     required
                     className="pl-12 pr-12 py-4 bg-gradient-to-r from-gray-900/50 to-gray-800/50 border-2 border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 transition-all duration-300"
                     placeholder="Create a strong password"
@@ -352,7 +421,11 @@ const Register = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors duration-200"
                   >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -405,7 +478,7 @@ const Register = () => {
               >
                 <span>Sign In</span>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-                
+
                 {/* Animated Underline */}
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></div>
               </NavLink>
