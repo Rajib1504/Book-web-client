@@ -7,8 +7,8 @@ interface RelatedProduct {
   id: string;
   title: string;
   subtitle: string;
-  short_description: string;
-  cover_image: string;
+  shortDesc: string;
+  coverImage: string;
   category: string;
 }
 interface RelatedProductsProps {
@@ -29,16 +29,25 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
     const fetchRelatedProducts = async () => {
       try {
         const { data } = await axiosInstance.get(
-          `/books?category=${category}&type=related_books&limit=4`
+          `/books/related/${category}/${currentBookId}`
         );
 
-        // Backend returns { status: true, data: { items: [...] } }
-        const books = data.data.items || [];
+        // Backend returns { success: true, data: [...] }
+        const items = Array.isArray(data.data)
+          ? data.data
+          : data.data?.items || [];
 
-        // Filter out the current book if it's in the list
-        setRelatedProducts(
-          books.filter((b: any) => b._id !== currentBookId).slice(0, 4)
-        );
+        const filtered = items
+          .map((b: any) => ({
+            ...b,
+            id: b._id,
+            subtitle: b.subtitle || b.tagline,
+            shortDesc: b.short_description || b.shortDesc,
+            coverImage: b.cover_image || b.coverImage,
+          }))
+          .slice(0, 4);
+
+        setRelatedProducts(filtered);
       } catch (error) {
         console.error("Failed to fetch related products:", error);
       } finally {
@@ -82,7 +91,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
             {/* Product Image */}
             <div className="w-full h-48 rounded-lg overflow-hidden mb-4">
               <img
-                src={product.cover_image}
+                src={product.coverImage}
                 alt={product.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -102,7 +111,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
 
               {/* Description - Truncated to 2 lines */}
               <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">
-                {product.short_description}
+                {product.shortDesc}
               </p>
 
               {/* Category Badge */}

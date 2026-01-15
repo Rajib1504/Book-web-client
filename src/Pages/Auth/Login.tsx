@@ -127,8 +127,10 @@ const Login = () => {
           navigate("/", { replace: true });
         },
       });
-    } catch {
-      setError("Invalid credentials. Please try again.");
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message || "Invalid credentials. Please try again."
+      );
       // Error shake animation
       gsap.to(formRef.current, {
         x: -10,
@@ -163,7 +165,7 @@ const Login = () => {
   return (
     <div
       ref={containerRef}
-      className="relative min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white overflow-hidden"
+      className="relative min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white"
     >
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -291,6 +293,14 @@ const Login = () => {
                       <Eye className="h-5 w-5" />
                     )}
                   </button>
+                </div>
+                <div className="flex justify-end mt-2">
+                  <NavLink
+                    to="/forgot-password"
+                    className="text-sm font-medium text-red-500 hover:text-red-400 transition-colors"
+                  >
+                    Forgot Password?
+                  </NavLink>
                 </div>
               </div>
 

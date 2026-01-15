@@ -4,6 +4,8 @@ import Home from "../Pages/Home/Home";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
 import VerifyOTP from "../Pages/Auth/VerifyOTP";
+import ForgotPassword from "../Pages/Auth/ForgotPassword";
+import ResetPassword from "../Pages/Auth/ResetPassword";
 import Product from "../Pages/Product";
 import PricingPage from "../Pages/Pricing/PricingPage";
 import AboutPage from "../Pages/About/AboutPage";
@@ -41,6 +43,14 @@ export const router = createBrowserRouter([
       {
         path: "/verify-otp",
         element: <VerifyOTP />,
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "/reset-password",
+        element: <ResetPassword />,
       },
       {
         path: "/products",

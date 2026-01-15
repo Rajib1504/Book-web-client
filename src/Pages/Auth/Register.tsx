@@ -36,7 +36,7 @@ const Register = () => {
   const [isFocused, setIsFocused] = useState("");
 
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -135,7 +135,7 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      const { data } = await axiosInstance.post("/auth/register", {
+      await axiosInstance.post("/auth/register", {
         fullName: name,
         email,
         phone,
@@ -214,7 +214,7 @@ const Register = () => {
   return (
     <div
       ref={containerRef}
-      className="relative min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white overflow-hidden"
+      className="relative min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white"
     >
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">

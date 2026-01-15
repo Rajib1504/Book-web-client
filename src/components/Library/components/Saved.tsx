@@ -15,13 +15,16 @@ const Saved = () => {
         // আসল Saved Books API কল
         const { data } = await axiosInstance.get("/users/saved-books");
 
-        if (data.success) {
-          // ডাটা ম্যাপিং
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const mappedProducts = data.data.map((id: any) => ({
-            ...id, // কারণ populate করা হয়েছে, তাই পুরো অবজেক্ট আসবে
-            id: id._id,
-            icon: id.icon || "book",
+        if (data.status || data.success) {
+          const items = Array.isArray(data.data)
+            ? data.data
+            : data.data?.items || [];
+          const mappedProducts = items.map((product: any) => ({
+            ...product,
+            id: product._id,
+            cover_image: product.cover_image || product.coverImage,
+            subtitle: product.subtitle || product.tagline,
+            icon: product.icon || "book",
           }));
           setProducts(mappedProducts);
         }
@@ -39,10 +42,12 @@ const Saved = () => {
   const handleSave = async (id: string) => {
     // অপটিমিস্টিক আপডেট: আগেই লিস্ট থেকে সরিয়ে দিচ্ছি
     const previousProducts = [...products];
-    setProducts(products.filter(p => p.id !== id));
+    setProducts(products.filter((p) => p.id !== id));
 
     try {
-      const { data } = await axiosInstance.post("/users/save-book", { bookId: id });
+      const { data } = await axiosInstance.post("/users/save-book", {
+        bookId: id,
+      });
       if (data.success) {
         toast.success("Removed from saved list");
       } else {

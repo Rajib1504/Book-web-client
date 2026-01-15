@@ -14,7 +14,8 @@ interface license {
 }
 interface User {
   _id: string;
-  name: string;
+  name?: string;
+  fullName?: string;
   email: string;
   role: "user" | "admin";
   plan: "pro" | "free";

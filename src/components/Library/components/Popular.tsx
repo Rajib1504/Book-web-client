@@ -14,11 +14,16 @@ const Popular = () => {
       try {
         const { data } = await axiosInstance.get("/books");
 
-        if (data.success) {
+        if (data.status) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const mappedProducts = data.data.map((book: any) => ({
+          const items = Array.isArray(data.data)
+            ? data.data
+            : data.data?.items || [];
+          const mappedProducts = items.map((book: any) => ({
             ...book,
             id: book._id,
+            cover_image: book.cover_image || book.coverImage,
+            subtitle: book.subtitle || book.tagline,
             icon: book.icon || "book",
           }));
 
@@ -36,9 +41,11 @@ const Popular = () => {
   // --- SAVE API CONNECTION ---
   const handleSave = async (id: string) => {
     try {
-      const { data } = await axiosInstance.post("/users/save-book", { bookId: id });
-      if (data.success) {
-        toast.success(data.message);
+      const { data } = await axiosInstance.post("/users/save-book", {
+        bookId: id,
+      });
+      if (data.status || data.success) {
+        toast.success(data.message || "Book saved successfully");
       }
     } catch (error) {
       console.error("Save failed:", error);

@@ -92,7 +92,7 @@ const VerifyOTP = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white flex items-center justify-center p-4 overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white flex items-center justify-center p-4">
       {/* Background Orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
       <div
@@ -102,7 +102,7 @@ const VerifyOTP = () => {
 
       <div
         ref={containerRef}
-        className="relative z-10 w-full max-w-md bg-gradient-to-b from-[#1a1a1a] to-[#0f0f0f] border border-gray-800/50 rounded-[2.5rem] p-10 shadow-2xl shadow-black/50 backdrop-blur-xl"
+        className="relative z-10 w-full max-w-md bg-gradient-to-b from-[#1a1a1a] to-[#0f0f0f] border border-gray-800/50 rounded-[2.5rem] p-6 sm:p-10 shadow-2xl shadow-black/50 backdrop-blur-xl"
       >
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center mb-8 w-24 h-24 bg-gradient-to-br from-red-500/20 to-red-600/20 border border-red-500/30 rounded-3xl shadow-lg shadow-red-500/10 transition-transform hover:scale-105 duration-300">
@@ -118,7 +118,7 @@ const VerifyOTP = () => {
         </div>
 
         <form onSubmit={handleVerify} className="space-y-10">
-          <div className="flex justify-between gap-3">
+          <div className="grid grid-cols-6 gap-2 sm:gap-3">
             {otp.map((digit, idx) => (
               <Input
                 key={idx}
@@ -126,11 +126,13 @@ const VerifyOTP = () => {
                   inputRefs.current[idx] = el;
                 }}
                 type="text"
+                inputMode="numeric"
+                pattern="\d*"
                 maxLength={1}
                 value={digit}
                 onChange={(e) => handleChange(idx, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(idx, e)}
-                className="w-full h-16 text-center text-3xl font-bold bg-[#252525]/50 border-2 border-gray-800/50 rounded-2xl focus:border-red-500/50 focus:ring-4 focus:ring-red-500/10 transition-all duration-300 text-white placeholder-gray-600"
+                className="w-full h-12 sm:h-16 text-center text-xl sm:text-3xl font-bold bg-[#252525]/50 border-2 border-gray-800/50 rounded-xl sm:rounded-2xl focus:border-red-500/50 focus:ring-4 focus:ring-red-500/10 transition-all duration-300 text-white placeholder-gray-600"
               />
             ))}
           </div>
@@ -154,6 +156,19 @@ const VerifyOTP = () => {
               )}
             </div>
           </Button>
+
+          <div className="text-center">
+            <button
+              type="button"
+              onClick={() => navigate("/register")}
+              className="text-gray-400 hover:text-white transition-colors text-sm"
+            >
+              Entered the wrong email?{" "}
+              <span className="text-red-400 font-semibold underline">
+                Go back
+              </span>
+            </button>
+          </div>
         </form>
       </div>
     </div>

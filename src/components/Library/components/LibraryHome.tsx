@@ -16,50 +16,57 @@ import { axiosInstance } from "../../../lib/axios";
 import toast from "react-hot-toast"; // টোস্ট ইম্পোর্ট
 
 const LibraryHome = () => {
-  // --- MOCK DATA FOR FILTERS ---
-  const allCategories = [
-    "Ebook",
-    "Email Template",
-    "Marketing",
-    "Design",
-    "Productivity",
-  ];
-  const allTags = [
-    "digital marketing",
-    "content marketing",
-    "personal development",
-    "lead generation",
-    "startups",
-    "productivity",
-    "mindset",
-  ];
-
   // --- STATE MANAGEMENT ---
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
+    []
+  );
+  const [tags, setTags] = useState<string[]>([]);
 
   // Filter States
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
+  // Fetch Categories and Tags
+  useEffect(() => {
+    const fetchMetadata = async () => {
+      try {
+        const { data } = await axiosInstance.get("/books/metadata");
+        if (data.success || data.status) {
+          setCategories(data.data.categories || []);
+          setTags(data.data.tags || []);
+        }
+      } catch (error) {
+        console.error("Failed to fetch metadata:", error);
+      }
+    };
+    fetchMetadata();
+  }, []);
+
   // --- DATA FETCHING FUNCTION ---
   const fetchProducts = async () => {
     setLoading(true);
     try {
       const params: Record<string, string> = {};
-      
+
       if (searchTerm) params.search = searchTerm;
       if (selectedCategory) params.category = selectedCategory;
       if (selectedTag) params.tags = selectedTag;
 
       const { data } = await axiosInstance.get("/books", { params });
-      
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const mappedProducts = data.data.map((book: any) => ({
+
+      const items = Array.isArray(data.data)
+        ? data.data
+        : data.data?.items || [];
+      const mappedProducts = items.map((book: any) => ({
         ...book,
         id: book._id,
-        icon: book.icon || "book", 
+        cover_image: book.cover_image || book.coverImage,
+        shortDesc: book.short_description || book.shortDesc,
+        longDesc: book.long_description || book.longDesc,
+        icon: book.icon || "book",
       }));
 
       setProducts(mappedProducts);
@@ -82,8 +89,10 @@ const LibraryHome = () => {
   // --- SAVE API CONNECTION ---
   const handleSave = async (id: string) => {
     try {
-      const { data } = await axiosInstance.post("/users/save-book", { bookId: id });
-      if (data.success) {
+      const { data } = await axiosInstance.post("/users/save-book", {
+        bookId: id,
+      });
+      if (data.status) {
         // মেসেজ অনুযায়ী টোস্ট দেখানো
         toast.success(data.message);
       }
@@ -145,17 +154,20 @@ const LibraryHome = () => {
                 variant="outline"
                 className="w-full sm:w-auto justify-between"
               >
-                {selectedCategory || "Filter by category"}
+                {selectedCategory
+                  ? categories.find((c) => c.id === selectedCategory)?.name ||
+                    "Filter by category"
+                  : "Filter by category"}
                 <ChevronsUpDown className="h-4 w-4 opacity-50 ml-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-full sm:w-[240px]">
-              {allCategories.map((category) => (
+              {categories.map((category) => (
                 <DropdownMenuItem
-                  key={category}
-                  onSelect={() => setSelectedCategory(category)}
+                  key={category.id}
+                  onSelect={() => setSelectedCategory(category.id)}
                 >
-                  {category}
+                  {category.name}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -172,7 +184,7 @@ const LibraryHome = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-full sm:w-[240px]">
-              {allTags.map((tag) => (
+              {tags.map((tag) => (
                 <DropdownMenuItem
                   key={tag}
                   onSelect={() => setSelectedTag(tag)}
@@ -238,7 +250,11 @@ const LibraryHome = () => {
             {products.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {products.map((product) => (
-                  <ProductCard key={product.id} product={product} onSave={handleSave} />
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onSave={handleSave}
+                  />
                 ))}
               </div>
             ) : (

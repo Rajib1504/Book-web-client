@@ -22,23 +22,31 @@ import toast from "react-hot-toast";
 
 // Define the type for our product data
 interface Product {
-  id: string; // Frontend uses id
-  _id?: string; // Backend sends _id
+  id: string;
+  _id?: string;
   title: string;
-  subtitle: string;
+  author: string;
+  subtitle?: string;
+  tagline?: string;
   category: string;
   tags: string[];
-  short_description: string;
-  cover_image: string;
-  stats: {
+  shortDesc: string;
+  longDesc: string;
+  coverImage: string;
+  stats?: {
     pages: number;
     words: string;
     size: string;
   };
-  long_description: string;
-  whats_inside: string[];
-  usage_rights: string[];
-  file_details: {
+  keyPoints?: {
+    title: string;
+    description: string;
+  }[];
+  insights?: {
+    title: string;
+    description: string;
+  }[];
+  file_details?: {
     type: string;
     size: string;
     date_added: string;
@@ -53,11 +61,12 @@ const ProductDetailsPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Generate multiple product images using the same URL (Demo logic maintained)
+  // Generate multiple product images using the same URL (Demo logic maintained)
   const productImages = [
-    product?.cover_image,
-    product?.cover_image,
-    product?.cover_image,
-    product?.cover_image,
+    product?.coverImage,
+    product?.coverImage,
+    product?.coverImage,
+    product?.coverImage,
   ].filter(Boolean) as string[];
 
   useEffect(() => {
@@ -68,11 +77,15 @@ const ProductDetailsPage = () => {
         // ২. রিয়েল API কল (/books/:id)
         const { data } = await axiosInstance.get(`/books/${id}`);
 
-        if (data.success) {
-          // ব্যাকএন্ডের _id কে ফ্রন্টএন্ডের id তে ম্যাপ করা
+        if (data.status) {
+          const rawProduct = data.data;
           setProduct({
-            ...data.data,
-            id: data.data._id,
+            ...rawProduct,
+            id: rawProduct._id,
+            coverImage: rawProduct.cover_image || rawProduct.coverImage,
+            shortDesc: rawProduct.short_description || rawProduct.shortDesc,
+            longDesc: rawProduct.long_description || rawProduct.longDesc,
+            subtitle: rawProduct.subtitle || rawProduct.tagline,
           });
         } else {
           setError("Product not found");
@@ -97,7 +110,7 @@ const ProductDetailsPage = () => {
         bookId: product.id,
       });
       console.log(data);
-      if (data.success) {
+      if (data.status) {
         toast.success(data.message);
       }
     } catch (error) {
@@ -206,7 +219,7 @@ const ProductDetailsPage = () => {
               </div>
 
               <p className="text-gray-700 text-lg leading-relaxed">
-                {product.short_description}
+                {product.shortDesc}
               </p>
             </div>
 
@@ -315,19 +328,26 @@ const ProductDetailsPage = () => {
                 Description
               </h2>
               <p className="text-gray-700 leading-relaxed mb-6 prose">
-                {product.long_description}
+                {product.longDesc}
               </p>
 
               <Separator className="my-6" />
 
               <h3 className="text-xl font-bold mb-4 text-gray-900">
-                What's Inside:
+                Key Points:
               </h3>
               <ul className="space-y-3">
-                {product.whats_inside?.map((item, index) => (
+                {product.keyPoints?.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <Check className="h-5 w-5 text-red-500 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700">{item}</span>
+                    <div className="flex flex-col">
+                      <span className="text-gray-900 font-semibold">
+                        {item.title}
+                      </span>
+                      <span className="text-gray-700 text-sm">
+                        {item.description}
+                      </span>
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -345,7 +365,7 @@ const ProductDetailsPage = () => {
                     className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden border border-gray-200 hover:border-red-400 transition-colors cursor-pointer group relative"
                   >
                     <img
-                      src={product.cover_image}
+                      src={product.coverImage}
                       alt={`Page ${index + 1}`}
                       className="w-full h-full object-cover"
                     />
@@ -404,13 +424,20 @@ const ProductDetailsPage = () => {
                 <div className="p-6">
                   <h3 className="text-lg font-semibold mb-4 text-gray-900 flex items-center gap-2">
                     <ShieldCheck className="h-5 w-5 text-green-600" />
-                    Usage Rights
+                    Insights
                   </h3>
                   <ul className="space-y-3 text-sm">
-                    {product.usage_rights?.map((item, index) => (
+                    {product.insights?.map((item, index) => (
                       <li key={index} className="flex items-center gap-3">
                         <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
-                        <span className="text-gray-700">{item}</span>
+                        <div className="flex flex-col">
+                          <span className="text-gray-900 font-semibold">
+                            {item.title}
+                          </span>
+                          <span className="text-gray-700 text-xs">
+                            {item.description}
+                          </span>
+                        </div>
                       </li>
                     ))}
                   </ul>
