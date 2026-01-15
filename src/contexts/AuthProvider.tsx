@@ -13,13 +13,15 @@ interface license {
   fileUrl: string;
 }
 interface User {
-  _id: string;
-  name?: string;
-  fullName?: string;
+  id: string;
+  fullName: string;
   email: string;
-  role: "user" | "admin";
-  plan: "pro" | "free";
-  license: license;
+  phone: string;
+  profilePic: string;
+  is_admin: number;
+  status: number;
+  plan?: "pro" | "free"; // Optional as backend doesn't send it yet
+  license?: license;
 }
 
 interface AuthContextType {

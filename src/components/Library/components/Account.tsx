@@ -73,8 +73,8 @@ export default function Account() {
   };
 
   // নামের আদ্যক্ষর (Initials) বের করা
-  const userInitials = user.name
-    ? user.name
+  const userInitials = user.fullName
+    ? user.fullName
         ?.split(" ")
         .map((n) => n[0])
         .join("")
@@ -109,7 +109,7 @@ export default function Account() {
             </Avatar>
             <div className="flex flex-col text-center sm:text-left">
               <span className="text-2xl font-bold text-gray-900">
-                Hello, {user.name?.split(" ")[0]}!
+                Hello, {user.fullName?.split(" ")[0]}!
               </span>
               <span className="text-sm text-gray-500 font-medium">
                 Member since{" "}
@@ -148,7 +148,7 @@ export default function Account() {
                   Full Name
                 </label>
                 <div className="p-3 bg-gray-50 rounded-lg border border-gray-100 font-medium text-gray-900">
-                  {user.name}
+                  {user.fullName}
                 </div>
               </div>
 
@@ -171,7 +171,7 @@ export default function Account() {
                     variant="secondary"
                     className="px-3 py-1 capitalize bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200"
                   >
-                    {user.role}
+                    {user.is_admin ? "Admin" : "User"}
                   </Badge>
                 </div>
               </div>

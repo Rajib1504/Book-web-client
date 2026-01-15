@@ -91,6 +91,28 @@ const VerifyOTP = () => {
     }
   };
 
+  const handleResend = async () => {
+    setIsLoading(true);
+    setError("");
+    try {
+      const { data } = await axiosInstance.post("/auth/resend-verification", {
+        email,
+      });
+      if (data.status || data.success) {
+        toast.success(data.message || "New code sent to your email!");
+      } else {
+        setError(data.message || "Failed to resend code.");
+      }
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message ||
+          "Failed to resend code. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#111111] to-[#0A0A0A] text-white flex items-center justify-center p-4">
       {/* Background Orbs */}
@@ -157,17 +179,31 @@ const VerifyOTP = () => {
             </div>
           </Button>
 
-          <div className="text-center">
+          <div className="text-center space-y-4">
             <button
               type="button"
-              onClick={() => navigate("/register")}
-              className="text-gray-400 hover:text-white transition-colors text-sm"
+              onClick={handleResend}
+              disabled={isLoading}
+              className="text-gray-400 hover:text-red-400 transition-colors text-sm font-medium"
             >
-              Entered the wrong email?{" "}
-              <span className="text-red-400 font-semibold underline">
-                Go back
+              Didn't receive the code?{" "}
+              <span className="underline decoration-red-500/30 underline-offset-4">
+                Resend Code
               </span>
             </button>
+
+            <div>
+              <button
+                type="button"
+                onClick={() => navigate("/register")}
+                className="text-gray-500 hover:text-white transition-colors text-xs"
+              >
+                Entered the wrong email?{" "}
+                <span className="text-red-400/80 font-semibold underline">
+                  Go back
+                </span>
+              </button>
+            </div>
           </div>
         </form>
       </div>

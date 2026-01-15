@@ -38,7 +38,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      if (user?.plan === "pro") {
+      if (user?.is_admin) {
         navigate("/library", { replace: true });
       } else {
         navigate("/", { replace: true });
@@ -144,9 +144,9 @@ const Login = () => {
     }
   };
 
-  const handleInputFocus = (field: string) => {
-    setIsFocused(field);
-    gsap.to(`#${field}-container`, {
+  const handleInputFocus = (id: string) => {
+    setIsFocused(id);
+    gsap.to(`#${id}-container`, {
       scale: 1.02,
       duration: 0.3,
       ease: "power2.out",
