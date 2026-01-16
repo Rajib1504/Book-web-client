@@ -118,7 +118,7 @@ const Header = () => {
                       className="relative h-10 w-10 rounded-full"
                     >
                       <div className="flex items-center justify-center h-full w-full border-blue-600 rounded-full text-white text-lg font-semibold">
-                        {data?.name?.charAt(0).toLocaleUpperCase()}
+                        {data?.fullName?.charAt(0).toLocaleUpperCase()}
                       </div>
                     </Button>
                   </DropdownMenuTrigger>
@@ -126,7 +126,7 @@ const Header = () => {
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
                         <p className="text-sm font-medium leading-none">
-                          {data?.name}
+                          {data?.fullName}
                         </p>
                         <p className="text-xs leading-none text-muted-foreground">
                           {data?.email}
