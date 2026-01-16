@@ -12,19 +12,20 @@ const Popular = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const { data } = await axiosInstance.get("/books");
+        const { data } = await axiosInstance.get("/books/top");
 
         if (data.status) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const items = Array.isArray(data.data)
             ? data.data
             : data.data?.items || [];
-          const mappedProducts = items.map((book: any) => ({
-            ...book,
-            id: book._id,
-            cover_image: book.cover_image || book.coverImage,
-            subtitle: book.subtitle || book.tagline,
-            icon: book.icon || "book",
+          const mappedProducts = items.map((item: any) => ({
+            id: item.bookId || item._id,
+            title: item.title,
+            subtitle: item.shortDesc || item.subtitle || item.tagline,
+            cover_image: item.coverImage || item.cover_image,
+            icon: item.icon || "book",
+            category: item.category || "",
           }));
 
           setProducts(mappedProducts);
