@@ -71,7 +71,9 @@ const LibraryNavbar: React.FC<LibraryNavbarProps> = ({
                   src={user?.data.name.charAt(0).toLocaleUpperCase()}
                   alt={user?.data?.name || "user"}
                 /> */}
-                <AvatarFallback className="bg-red-100 text-red-600">{user?.name?.charAt(0)?.toUpperCase()}</AvatarFallback>
+                <AvatarFallback className="bg-red-100 text-red-600">
+                  {user?.fullName?.charAt(0)?.toUpperCase() || "U"}
+                </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
@@ -79,7 +81,7 @@ const LibraryNavbar: React.FC<LibraryNavbarProps> = ({
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">
-                  {user?.name || "User Name"}
+                  {user?.fullName || "User Name"}
                 </p>
                 <p className="text-xs leading-none text-gray-500">
                   {user?.email || "user@example.com"}

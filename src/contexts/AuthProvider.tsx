@@ -7,17 +7,18 @@ import {
 } from "react";
 import { axiosInstance } from "./../lib/axios";
 
-interface license {
+export interface license {
   Key: string;
   issueDate: string;
   fileUrl: string;
 }
-interface User {
+export interface User {
   id: string;
   fullName: string;
   email: string;
   phone: string;
   profilePic: string;
+  description: string;
   is_admin: number;
   status: number;
   plan?: "pro" | "free"; // Optional as backend doesn't send it yet
@@ -49,11 +50,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         ] = `Bearer ${token}`;
         try {
           const { data } = await axiosInstance.get("/users/profile");
-          setUser(data.data);
-        } catch {
+          if (data.status) {
+            setUser(data.data);
+          } else {
+            throw new Error(data.message || "Failed to fetch profile");
+          }
+        } catch (error) {
+          console.error("Verification failed:", error);
           localStorage.removeItem("authToken");
           delete axiosInstance.defaults.headers.common["Authorization"];
+          setUser(null);
         }
+      } else {
+        setUser(null);
       }
       setIsLoading(false);
     };

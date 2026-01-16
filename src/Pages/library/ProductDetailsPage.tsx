@@ -19,43 +19,12 @@ import { Separator } from "../../components/ui/separator";
 import { Skeleton } from "../../components/ui/skeleton";
 import { axiosInstance } from "../../lib/axios"; // ১. Axios ইম্পোর্ট
 import toast from "react-hot-toast";
-
-// Define the type for our product data
-interface Product {
-  id: string;
-  _id?: string;
-  title: string;
-  author: string;
-  subtitle?: string;
-  tagline?: string;
-  category: string;
-  tags: string[];
-  shortDesc: string;
-  longDesc: string;
-  coverImage: string;
-  stats?: {
-    pages: number;
-    words: string;
-    size: string;
-  };
-  keyPoints?: {
-    title: string;
-    description: string;
-  }[];
-  insights?: {
-    title: string;
-    description: string;
-  }[];
-  file_details?: {
-    type: string;
-    size: string;
-    date_added: string;
-  };
-}
+import { useAuth } from "../../contexts/AuthProvider";
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
+  // const { user, updateUser } = useAuth(); // Get user and updateUser from Auth
+  const [product, setProduct] = useState<any | null>(null); // Using any for simplicity with complex joined data
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -207,7 +176,7 @@ const ProductDetailsPage = () => {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-6">
-                {product.tags?.map((tag, index) => (
+                {product.tags?.map((tag: string, index: number) => (
                   <Badge
                     key={index}
                     variant="outline"
@@ -337,7 +306,7 @@ const ProductDetailsPage = () => {
                 Key Points:
               </h3>
               <ul className="space-y-3">
-                {product.keyPoints?.map((item, index) => (
+                {product.keyPoints?.map((item: any, index: number) => (
                   <li key={index} className="flex items-start gap-3">
                     <Check className="h-5 w-5 text-red-500 mt-1 flex-shrink-0" />
                     <div className="flex flex-col">
@@ -419,7 +388,8 @@ const ProductDetailsPage = () => {
                   </div>
                 </div>
               </div>
-              {/* Usage Rights Card */}
+
+              {/* Insights Card */}
               <div className="bg-white border border-gray-200 rounded-2xl shadow-lg">
                 <div className="p-6">
                   <h3 className="text-lg font-semibold mb-4 text-gray-900 flex items-center gap-2">
@@ -427,7 +397,7 @@ const ProductDetailsPage = () => {
                     Insights
                   </h3>
                   <ul className="space-y-3 text-sm">
-                    {product.insights?.map((item, index) => (
+                    {product.insights?.map((item: any, index: number) => (
                       <li key={index} className="flex items-center gap-3">
                         <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
                         <div className="flex flex-col">
@@ -443,6 +413,40 @@ const ProductDetailsPage = () => {
                   </ul>
                 </div>
               </div>
+
+              {/* Author Card / Follow Section */}
+              {product.createdBy && (
+                <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="h-12 w-12 rounded-full overflow-hidden bg-red-50 border-2 border-red-100 flex items-center justify-center">
+                      {product.createdBy.profilePic ? (
+                        <img
+                          src={
+                            product.createdBy.profilePic.startsWith("http")
+                              ? product.createdBy.profilePic
+                              : `http://localhost:8080${product.createdBy.profilePic}`
+                          }
+                          alt={product.createdBy.fullName}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-red-600 font-bold text-lg">
+                          {product.createdBy.fullName?.[0] || "A"}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-500 font-medium">
+                        Author
+                      </p>
+                      <h4 className="text-base font-bold text-gray-900 truncate">
+                        {product.createdBy.fullName || product.author}
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* File Details Card */}
               <div className="bg-white border border-gray-200 rounded-2xl shadow-lg">
                 <div className="p-6">

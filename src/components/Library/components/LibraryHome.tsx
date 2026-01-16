@@ -33,10 +33,16 @@ const LibraryHome = () => {
   useEffect(() => {
     const fetchMetadata = async () => {
       try {
-        const { data } = await axiosInstance.get("/books/metadata");
-        if (data.success || data.status) {
-          setCategories(data.data.categories || []);
-          setTags(data.data.tags || []);
+        // Fetch Categories from dedicated API
+        const categoryRes = await axiosInstance.get("/category/list");
+        if (categoryRes.data.status) {
+          setCategories(categoryRes.data.data || []);
+        }
+
+        // Fetch Tags from metadata API
+        const metaRes = await axiosInstance.get("/books/metadata");
+        if (metaRes.data.status) {
+          setTags(metaRes.data.data.tags || []);
         }
       } catch (error) {
         console.error("Failed to fetch metadata:", error);

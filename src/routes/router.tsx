@@ -75,7 +75,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    // element: <PrivateRoutes />,
+    element: <PrivateRoutes />,
     children: [
       {
         path: "/library",
