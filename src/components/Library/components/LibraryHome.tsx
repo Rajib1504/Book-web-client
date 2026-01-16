@@ -39,10 +39,14 @@ const LibraryHome = () => {
           setCategories(categoryRes.data.data || []);
         }
 
-        // Fetch Tags from metadata API
-        const metaRes = await axiosInstance.get("/books/metadata");
-        if (metaRes.data.status) {
-          setTags(metaRes.data.data.tags || []);
+        // Fetch Tags from the new public tag list API
+        const tagRes = await axiosInstance.get("/tags/list");
+        if (tagRes.data.status) {
+          // Map tag objects to names for the existing state
+          const tagNames = (tagRes.data.data || []).map(
+            (t: { name: string }) => t.name
+          );
+          setTags(tagNames);
         }
       } catch (error) {
         console.error("Failed to fetch metadata:", error);
