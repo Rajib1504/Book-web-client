@@ -222,7 +222,8 @@ const LibraryHome = () => {
             )}
             {selectedCategory && (
               <Badge variant="secondary" className="pl-2">
-                {selectedCategory}
+                {categories.find((c) => c.id === selectedCategory)?.name ||
+                  "Category"}
                 <button
                   onClick={() => setSelectedCategory(null)}
                   className="ml-1"

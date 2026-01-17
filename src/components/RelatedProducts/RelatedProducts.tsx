@@ -12,38 +12,42 @@ interface RelatedProduct {
   category: string;
 }
 interface RelatedProductsProps {
-  category?: string;
+  categoryId?: string;
   currentBookId?: string;
 }
+
 const RelatedProducts: React.FC<RelatedProductsProps> = ({
-  category,
+  categoryId,
   currentBookId,
 }) => {
   const [relatedProducts, setRelatedProducts] = useState<RelatedProduct[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!category && !currentBookId) {
+    if (!categoryId) {
+      setLoading(false);
       return;
     }
     const fetchRelatedProducts = async () => {
       try {
+        // Use the new category-based book list API
         const { data } = await axiosInstance.get(
-          `/books/related/${category}/${currentBookId}`
+          `/books/categorybasebooklist?category_id=${categoryId}`
         );
 
-        // Backend returns { success: true, data: [...] }
-        const items = Array.isArray(data.data)
-          ? data.data
-          : data.data?.items || [];
+        // The API returns paginated data in data.data.items
+        const items = data.data?.items || [];
 
         const filtered = items
+          .filter((b: any) => b._id !== currentBookId) // Filter out current book
           .map((b: any) => ({
             ...b,
             id: b._id,
             subtitle: b.subtitle || b.tagline,
             shortDesc: b.short_description || b.shortDesc,
             coverImage: b.cover_image || b.coverImage,
+            // Extract category name if it's an array of objects
+            category: Array.isArray(b.categories) ? b.categories[0]?.name : "",
           }))
           .slice(0, 4);
 
@@ -56,7 +60,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
     };
 
     fetchRelatedProducts();
-  }, [category, currentBookId]);
+  }, [categoryId, currentBookId]);
 
   if (loading) {
     return (

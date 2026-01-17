@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, NavLink } from "react-router-dom";
 import {
   Bookmark,
@@ -11,6 +11,8 @@ import {
   ChevronRight,
   ArrowLeft,
   ShieldCheck,
+  Play,
+  X,
 } from "lucide-react";
 import RelatedProducts from "../../components/RelatedProducts/RelatedProducts";
 import { Button } from "../../components/ui/button";
@@ -28,6 +30,8 @@ const ProductDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [selectedPdfUrl, setSelectedPdfUrl] = useState<string | null>(null);
+  const pdfSectionRef = useRef<HTMLDivElement>(null);
 
   // Generate multiple product images using the same URL (Demo logic maintained)
   // Generate multiple product images using the same URL (Demo logic maintained)
@@ -164,7 +168,7 @@ const ProductDetailsPage = () => {
                 variant="outline"
                 className="mb-4 text-red-600 border-red-200 bg-red-50 font-semibold"
               >
-                {product.category}
+                {product.categories?.[0]?.name || product.category}
               </Badge>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 leading-tight text-gray-900">
@@ -322,6 +326,81 @@ const ProductDetailsPage = () => {
               </ul>
             </div>
 
+            {/* Chapters Section */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Chapters</h2>
+                <Badge variant="secondary" className="bg-red-50 text-red-600">
+                  {product.chapters?.length || 0} Lessons
+                </Badge>
+              </div>
+              <div className="space-y-3">
+                {product.chapters && product.chapters.length > 0 ? (
+                  product.chapters.map((chapter: any, index: number) => (
+                    <div
+                      key={chapter._id}
+                      className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/30 transition-all"
+                    >
+                      <div className="flex items-center gap-4 mb-3 sm:mb-0">
+                        <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold group-hover:bg-red-100 group-hover:text-red-600 transition-colors">
+                          {index + 1}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-gray-900 group-hover:text-red-700 transition-colors line-clamp-1">
+                            {chapter.title}
+                          </h4>
+                          <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {chapter.duration || "00:00"}
+                            </span>
+                            <span className="flex items-center gap-1 capitalized">
+                              <FileText className="h-3 w-3" />
+                              {chapter.mediaType || "PDF"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {chapter.pdfPath && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="text-xs border-red-200 text-red-600 hover:bg-red-600 hover:text-white transition-all"
+                            onClick={() => {
+                              setSelectedPdfUrl(chapter.pdfPath);
+                              setTimeout(() => {
+                                pdfSectionRef.current?.scrollIntoView({
+                                  behavior: "smooth",
+                                  block: "start",
+                                });
+                              }, 100);
+                            }}
+                          >
+                            <FileText className="h-4 w-4 mr-1.5" />
+                            View PDF
+                          </Button>
+                        )}
+                        <Button
+                          size="sm"
+                          className="bg-black hover:bg-gray-800 text-white text-xs px-4"
+                        >
+                          <Play className="h-4 w-4 mr-1.5 fill-current" />
+                          Play
+                        </Button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+                    <p className="text-gray-500">
+                      No chapters available for this book.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* Content Preview Grid */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8">
               <h3 className="text-2xl font-bold mb-4 text-gray-900">
@@ -347,6 +426,42 @@ const ProductDetailsPage = () => {
                 ))}
               </div>
             </div>
+
+            {/* Inline PDF Preview Section */}
+            {selectedPdfUrl && (
+              <div
+                ref={pdfSectionRef}
+                className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 mt-8 scroll-mt-24"
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                    <FileText className="h-6 w-6 text-red-600" />
+                    Chapter PDF Preview
+                  </h3>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSelectedPdfUrl(null)}
+                    className="text-gray-500 hover:text-red-600"
+                  >
+                    <X className="h-5 w-5 mr-1" />
+                    Close Preview
+                  </Button>
+                </div>
+                <div className="w-full h-[800px] rounded-xl overflow-hidden border border-gray-200 shadow-inner bg-gray-100">
+                  <iframe
+                    src={`${selectedPdfUrl}#toolbar=0&navpanes=0&scrollbar=0`}
+                    className="w-full h-full border-none"
+                    title="PDF Preview"
+                  />
+                </div>
+                <div className="mt-4 p-4 bg-red-50 rounded-lg border border-red-100">
+                  <p className="text-sm text-red-700 font-medium text-center">
+                    Note: This is a preview of the chapter contents.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right Column: Actions and Details */}
@@ -486,7 +601,7 @@ const ProductDetailsPage = () => {
         {/* ৩. রিলেটেড প্রোডাক্টের জন্য ক্যাটাগরি ও আইডি পাস করা হলো */}
         {/* (তবে RelatedProducts কম্পোনেন্টটি এখনো আপডেট করতে হবে) */}
         <RelatedProducts
-          category={product.category}
+          categoryId={product.categories?.[0]?._id}
           currentBookId={product._id}
         />
       </div>

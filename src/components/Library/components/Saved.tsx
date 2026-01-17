@@ -19,13 +19,20 @@ const Saved = () => {
           const items = Array.isArray(data.data)
             ? data.data
             : data.data?.items || [];
-          const mappedProducts = items.map((product: any) => ({
-            ...product,
-            id: product._id,
-            cover_image: product.cover_image || product.coverImage,
-            subtitle: product.subtitle || product.tagline,
-            icon: product.icon || "book",
-          }));
+          const baseUrl = import.meta.env.VITE_API_URL.split("/api")[0];
+          const mappedProducts = items.map((product: any) => {
+            const rawImage = product.coverImage || product.cover_image;
+            return {
+              ...product,
+              id: product._id,
+              cover_image:
+                rawImage && !rawImage.startsWith("http")
+                  ? `${baseUrl}${rawImage}`
+                  : rawImage || "",
+              subtitle: product.subtitle || product.tagline,
+              icon: product.icon || "book",
+            };
+          });
           setProducts(mappedProducts);
         }
       } catch (error) {
