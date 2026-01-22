@@ -19,9 +19,21 @@ import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
 import { Separator } from "../../components/ui/separator";
 import { Skeleton } from "../../components/ui/skeleton";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "../../components/ui/dialog";
 import { axiosInstance } from "../../lib/axios"; // ১. Axios ইম্পোর্ট
 import toast from "react-hot-toast";
 import { useAuth } from "../../contexts/AuthProvider";
+import { Document, Page, pdfjs } from "react-pdf";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/Page/TextLayer.css";
+
+// Configure PDF worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,6 +43,7 @@ const ProductDetailsPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedPdfUrl, setSelectedPdfUrl] = useState<string | null>(null);
+  const [selectedMediaUrl, setSelectedMediaUrl] = useState<string | null>(null);
   const pdfSectionRef = useRef<HTMLDivElement>(null);
 
   // Generate multiple product images using the same URL (Demo logic maintained)
@@ -197,7 +210,8 @@ const ProductDetailsPage = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            {/* Stats - Commented out as per user request (Empty data) */}
+            {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
               <div className="bg-white border border-gray-200 rounded-lg p-4 flex items-center gap-4">
                 <div className="p-3 bg-red-50 rounded-full">
                   <Book className="h-5 w-5 text-red-600" />
@@ -231,7 +245,7 @@ const ProductDetailsPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Main Product Image */}
             <div className="mb-4">
@@ -248,7 +262,7 @@ const ProductDetailsPage = () => {
                       size="icon"
                       onClick={() =>
                         setCurrentImageIndex((prev) =>
-                          prev === 0 ? productImages.length - 1 : prev - 1
+                          prev === 0 ? productImages.length - 1 : prev - 1,
                         )
                       }
                       className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/70 backdrop-blur-sm text-gray-900 hover:bg-white transition-all shadow-md"
@@ -260,7 +274,7 @@ const ProductDetailsPage = () => {
                       size="icon"
                       onClick={() =>
                         setCurrentImageIndex((prev) =>
-                          prev === productImages.length - 1 ? 0 : prev + 1
+                          prev === productImages.length - 1 ? 0 : prev + 1,
                         )
                       }
                       className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/70 backdrop-blur-sm text-gray-900 hover:bg-white transition-all shadow-md"
@@ -383,7 +397,16 @@ const ProductDetailsPage = () => {
                         )}
                         <Button
                           size="sm"
-                          className="bg-black hover:bg-gray-800 text-white text-xs px-4"
+                          className="bg-black hover:bg-gray-800 text-white text-xs px-4 cursor-pointer"
+                          onClick={() => {
+                            if (chapter.mediaPath) {
+                              setSelectedMediaUrl(chapter.mediaPath);
+                            } else {
+                              toast.error(
+                                "No media available for this chapter",
+                              );
+                            }
+                          }}
                         >
                           <Play className="h-4 w-4 mr-1.5 fill-current" />
                           Play
@@ -406,25 +429,47 @@ const ProductDetailsPage = () => {
               <h3 className="text-2xl font-bold mb-4 text-gray-900">
                 Content Preview
               </h3>
-              <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
-                {Array.from({ length: 5 }, (_, index) => (
-                  <div
-                    key={index}
-                    className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden border border-gray-200 hover:border-red-400 transition-colors cursor-pointer group relative"
-                  >
-                    <img
-                      src={product.coverImage}
-                      alt={`Page ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <span className="text-white text-sm font-semibold">
-                        Page {index + 1}
-                      </span>
+              {product.chapters?.[0]?.pdfPath ? (
+                <Document
+                  file={product.chapters[0].pdfPath}
+                  className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3"
+                  error={
+                    <div className="col-span-full text-center text-gray-400 py-10">
+                      Failed to load preview.
                     </div>
-                  </div>
-                ))}
-              </div>
+                  }
+                  loading={
+                    <div className="col-span-full h-40 flex items-center justify-center">
+                      <Skeleton className="h-full w-full" />
+                    </div>
+                  }
+                >
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <div
+                      key={index}
+                      className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden border border-gray-200 hover:border-red-400 transition-colors cursor-pointer group relative"
+                    >
+                      <Page
+                        pageNumber={index + 1}
+                        width={200}
+                        renderTextLayer={false}
+                        renderAnnotationLayer={false}
+                        className="w-full h-full object-cover"
+                        loading={<Skeleton className="w-full h-full" />}
+                      />
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="text-white text-sm font-semibold">
+                          Page {index + 1}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </Document>
+              ) : (
+                <div className="text-center py-10 text-gray-500 bg-gray-50 rounded-lg">
+                  No preview available
+                </div>
+              )}
             </div>
 
             {/* Inline PDF Preview Section */}
@@ -470,13 +515,13 @@ const ProductDetailsPage = () => {
               {/* Action Card */}
               <div className="bg-white border border-gray-200 rounded-2xl shadow-lg">
                 <div className="p-6 space-y-4">
-                  <Button
+                  {/* <Button
                     size="lg"
                     className="w-full bg-red-600 hover:bg-red-700 text-white text-base"
                   >
                     <Download className="h-5 w-5 mr-2" />
                     Download Product
-                  </Button>
+                  </Button> */}
                   <Button
                     size="lg"
                     variant="outline"
@@ -605,6 +650,32 @@ const ProductDetailsPage = () => {
           currentBookId={product._id}
         />
       </div>
+
+      {/* Media Player Dialog */}
+      <Dialog
+        open={!!selectedMediaUrl}
+        onOpenChange={(open) => !open && setSelectedMediaUrl(null)}
+      >
+        <DialogContent className="sm:max-w-4xl bg-black border-gray-800 text-white p-0 overflow-hidden">
+          <DialogHeader className="p-4 absolute top-0 left-0 w-full z-10 bg-gradient-to-b from-black/80 to-transparent">
+            <DialogTitle className="text-white drop-shadow-md">
+              Playing Media
+            </DialogTitle>
+          </DialogHeader>
+          <div className="aspect-video w-full bg-black flex items-center justify-center">
+            {selectedMediaUrl && (
+              <video
+                controls
+                autoPlay
+                className="w-full h-full"
+                src={selectedMediaUrl}
+              >
+                Your browser does not support the video tag.
+              </video>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

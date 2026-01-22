@@ -106,7 +106,7 @@ export default function Account() {
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
-        }
+        },
       );
 
       if (data.status) {
@@ -438,9 +438,11 @@ export default function Account() {
                   <span>Started On</span>
                 </div>
                 <span className="font-semibold text-sm text-gray-900">
-                  {user.license?.issueDate
-                    ? formatDate(user.license.issueDate)
-                    : "N/A"}
+                  {user.subscriptionPurchasedDate
+                    ? formatDate(user.subscriptionPurchasedDate)
+                    : user.license?.issueDate
+                      ? formatDate(user.license.issueDate)
+                      : "N/A"}
                 </span>
               </div>
 

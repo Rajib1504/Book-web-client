@@ -55,7 +55,7 @@ const Saved = () => {
       const { data } = await axiosInstance.post("/users/save-book", {
         bookId: id,
       });
-      if (data.success) {
+      if (data.status || data.success) {
         toast.success("Removed from saved list");
       } else {
         // ফেইল হলে আবার আগের অবস্থায়

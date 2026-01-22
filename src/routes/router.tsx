@@ -22,6 +22,8 @@ import ProductMockups from "../components/Library/components/ProductMockups";
 import PrivateRoutes from "./PrivateRoutes";
 import Service from "../Pages/Service/Service";
 import Resources from "../Pages/Resources/Resources";
+import SuccessPage from "../Pages/Pricing/SuccessPage";
+import CancelPage from "../Pages/Pricing/CancelPage";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +61,14 @@ export const router = createBrowserRouter([
       {
         path: "/pricing",
         element: <PricingPage />,
+      },
+      {
+        path: "/payment/success",
+        element: <SuccessPage />,
+      },
+      {
+        path: "/payment/cancel",
+        element: <CancelPage />,
       },
       {
         path: "/about",

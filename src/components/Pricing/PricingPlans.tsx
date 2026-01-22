@@ -32,7 +32,7 @@ const PricingPlans = () => {
   const { user } = useAuth();
   const [plans, setPlans] = useState<Plan[]>([]);
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">(
-    "monthly"
+    "monthly",
   );
   const [loading, setLoading] = useState(true);
   const [purchaseLoading, setPurchaseLoading] = useState<string | null>(null);
@@ -74,7 +74,7 @@ const PricingPlans = () => {
               trigger: section,
               start: "top 75%",
             },
-          }
+          },
         );
       }
     }
@@ -104,7 +104,7 @@ const PricingPlans = () => {
     } catch (error: any) {
       console.error("Stripe Error:", error);
       toast.error(
-        error.response?.data?.message || "Failed to initiate checkout"
+        error.response?.data?.message || "Failed to initiate checkout",
       );
     } finally {
       setPurchaseLoading(null);
@@ -141,7 +141,7 @@ const PricingPlans = () => {
             <button
               onClick={() =>
                 setBillingCycle((prev) =>
-                  prev === "monthly" ? "annual" : "monthly"
+                  prev === "monthly" ? "annual" : "monthly",
                 )
               }
               className="relative w-14 h-7 bg-gray-800 rounded-full p-1 transition-colors duration-300 hover:bg-gray-700"
@@ -175,8 +175,8 @@ const PricingPlans = () => {
               plans.length === 1
                 ? "max-w-2xl mx-auto"
                 : plans.length === 2
-                ? "max-w-5xl mx-auto grid-cols-1 md:grid-cols-2"
-                : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                  ? "max-w-5xl mx-auto grid-cols-1 md:grid-cols-2"
+                  : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
             }`}
           >
             {plans.map((plan) => (
@@ -209,8 +209,8 @@ const PricingPlans = () => {
                   <div className="flex items-baseline gap-2">
                     <span className="text-5xl font-extrabold text-white">
                       {billingCycle === "monthly"
-                        ? `₹${plan.priceMonthly}`
-                        : `₹${plan.priceAnnual}`}
+                        ? `$${plan.priceMonthly}`
+                        : `$${plan.priceAnnual}`}
                     </span>
                     <span className="text-gray-500 text-sm">
                       /{billingCycle === "monthly" ? "mo" : "yr"}
@@ -250,7 +250,7 @@ const PricingPlans = () => {
                     "Current Plan"
                   ) : (
                     <>
-                      Get Started <Zap className="ml-2 w-4 h-4" />
+                      Subscribe <Zap className="ml-2 w-4 h-4" />
                     </>
                   )}
                 </Button>

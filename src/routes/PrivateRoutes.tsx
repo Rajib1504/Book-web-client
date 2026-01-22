@@ -11,9 +11,9 @@ const PrivateRoutes = () => {
   if (!isAuthenticated && !user) {
     return <Navigate to={"/login"} state={{ from: location }} replace />;
   }
-  // if (user?.plan !== "pro") {
-  //   return <Navigate to={"/pricing"} state={{ from: location }} replace />;
-  // }
+  if (user?.plan !== "pro") {
+    return <Navigate to={"/pricing"} state={{ from: location }} replace />;
+  }
   return <Outlet />;
 };
 

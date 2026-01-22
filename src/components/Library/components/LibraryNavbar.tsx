@@ -89,9 +89,11 @@ const LibraryNavbar: React.FC<LibraryNavbarProps> = ({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link to="/library/account">My Account</Link>
-            </DropdownMenuItem>
+            {(user?.plan === "pro" || (user as any)?.is_admin === 1) && (
+              <DropdownMenuItem asChild>
+                <Link to="/library/account">My Account</Link>
+              </DropdownMenuItem>
+            )}
             {/* <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuItem>Support</DropdownMenuItem> */}
             {/* <DropdownMenuSeparator /> */}

@@ -156,7 +156,7 @@ const Register = () => {
       });
     } catch (err: any) {
       setError(
-        err.response?.data?.message || "Registration failed. Please try again."
+        err.response?.data?.message || "Registration failed. Please try again.",
       );
       // Error shake animation
       gsap.to(formRef.current, {
@@ -384,7 +384,7 @@ const Register = () => {
                     onBlur={() => handleInputBlur("phone")}
                     required
                     className="pl-12 pr-4 py-4 bg-gradient-to-r from-gray-900/50 to-gray-800/50 border-2 border-gray-700/50 rounded-xl text-white placeholder-gray-400 focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 transition-all duration-300"
-                    placeholder="Enter your phone number"
+                    placeholder="+1 (555) 000-0000"
                   />
                 </div>
               </div>
